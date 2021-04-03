@@ -2,8 +2,9 @@
   <q-page class="flex flex-center">
     <img
       alt="Quasar logo"
-      src="~assets/artha.png"
+      src="~assets/quasar-logo-full.svg"
     >
+     <img src="../statics/artha.png" style="width: 30%" />
   </q-page>
 </template>
 

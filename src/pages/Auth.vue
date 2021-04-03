@@ -6,16 +6,12 @@
       >
         <q-card-section class="col-xs-12 col-sm-6 col-md-6 text-center">
           <transition appear enter-active-class="animated zoomIn ">
-            <img src="statics/artha.png" style="width: 30%" />
-            <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-full.svg"
-    >
+            <img src="../statics/artha.png" style="width: 30%" />
           </transition>
           <br />
 
           <div class="q-mt-lg">
-            <img src="statics/powered.png" style="width: 30%" />
+            <img src="../statics/powered.png" style="width: 30%" />
           </div>
         </q-card-section>
 
@@ -23,14 +19,14 @@
           <transition appear enter-active-class="animated zoomIn">
             <q-card class="my-card shadow-6">
               <!-- <q-card-section class="q-mt-sm text-center">
-              <img src="statics/logobca.png" style="width: 80%" />
+              <img src="../statics/logobca.png" style="width: 80%" />
 
               <h5 class="q-mt-md text-primary text-weight-medium">Bank Central Asia</h5>
             </q-card-section>-->
               <q-card-section class="q-mr-md text-center">
-                <img src="statics/logobank.png" style="width: 100%" />
+                <img src="../statics/logobank.png" style="width: 100%" />
                 <div class="q-mb-md">
-                  <div class="float-right">vsss{{ appversion }}</div>
+                  <div class="float-right">v{{ appversion }}</div>
                 </div>
               </q-card-section>
               <q-separator />
@@ -48,12 +44,12 @@
       >
         <q-card-section class="col-12 text-center">
           <transition appear enter-active-class="animated zoomIn ">
-            <img src="statics/artha.png" style="width: 30%" />
+            <img src="../statics/artha.png" style="width: 30%" />
           </transition>
           <br />
 
           <div class="q-mt-lg">
-            <img src="statics/powered.png" style="width: 30%" />
+            <img src="../statics/powered.png" style="width: 30%" />
           </div>
         </q-card-section>
 
@@ -61,7 +57,7 @@
           <transition appear enter-active-class="animated zoomIn">
             <q-card class="my-card shadow-6">
               <q-card-section class="q-mr-md text-center">
-                <img src="statics/logobank.png" style="width: 100%" />
+                <img src="../statics/logobank.png" style="width: 100%" />
                 <div class="q-mb-md">
                   <div class="float-right">v{{ appversion }}</div>
                 </div>
@@ -77,12 +73,12 @@
       <div class="orientation-landscape transparent row  ">
         <q-card-section class="center q-mt-lg col-6 ">
           <transition appear enter-active-class="animated zoomIn ">
-            <img src="statics/artha.png" style="width: 30%" />
+            <img src="../statics/artha.png" style="width: 30%" />
           </transition>
           <br />
 
           <div class="q-mt-lg">
-            <img src="statics/powered.png" style="width: 30%" />
+            <img src="../statics/powered.png" style="width: 30%" />
           </div>
         </q-card-section>
 
@@ -90,7 +86,7 @@
           <transition appear enter-active-class="animated zoomIn">
             <q-card class="my-card shadow-6">
               <q-card-section class="q-mr-md text-center">
-                <img src="statics/logobank.png" style="width: 100%" />
+                <img src="../statics/logobank.png" style="width: 100%" />
                 <div class="q-mb-md">
                   <div class="float-right">v{{ appversion }}</div>
                 </div>

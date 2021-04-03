@@ -588,7 +588,6 @@ export default {
     },
     LoginButton() {
       let RefreshToken
-      this.$log.info('info call at function LoginButton')
       this.submitting = true
       // let userdata
       const body = qs.stringify({
