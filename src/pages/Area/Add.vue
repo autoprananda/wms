@@ -72,13 +72,11 @@ export default {
   props: ['Muser'],
   data() {
     return {
-      draggingFab: false,
-      fabPos: [18, 18],
-      userdata: this.Muser,
       AreaName: '',
       AreaCode: '',
       Country: '',
-      submitting: false
+      submitting: false,
+      user: this.$q.sessionStorage.getItem('username')
     }
   },
   methods: {
@@ -92,7 +90,7 @@ export default {
               area_code: this.AreaCode,
               area_name: this.AreaName,
               created_date: this.now,
-              created_by: 'auto_prananda'
+              created_by: this.user
             }
           }
         })

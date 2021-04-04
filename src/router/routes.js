@@ -5,6 +5,24 @@ const routes = [
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       { path: '', component: () => import('pages/Auth.vue') },
+      { path: 'register', component: () => import('pages/Register.vue') }
+    ]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/LoginLayout.vue'),
+    children: [
+      { path: 'register', component: () => import('pages/Register.vue') }
+    ]
+  },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('pages/Home.vue')
+      },
       {
         path: 'area',
         component: () => import('pages/Area/Main.vue')
@@ -116,6 +134,38 @@ const routes = [
       {
         path: 'masterdropdownList/view',
         component: () => import('pages/MasterDropDownList/View.vue')
+      },
+      {
+        path: 'menu',
+        component: () => import('pages/MasterMenuList/Main.vue')
+      },
+      {
+        path: 'menu/add',
+        component: () => import('pages/MasterMenuList/Add.vue')
+      },
+      {
+        path: 'menu/edit',
+        component: () => import('pages/MasterMenuList/Edit.vue')
+      },
+      {
+        path: 'menu/view',
+        component: () => import('pages/MasterMenuList/View.vue')
+      },
+      {
+        path: 'submenu',
+        component: () => import('pages/MasterSubMenuList/Main.vue')
+      },
+      {
+        path: 'submenu/add',
+        component: () => import('pages/MasterSubMenuList/Add.vue')
+      },
+      {
+        path: 'submenu/edit',
+        component: () => import('pages/MasterSubMenuList/Edit.vue')
+      },
+      {
+        path: 'submenu/view',
+        component: () => import('pages/MasterSubMenuList/View.vue')
       }
     ]
   },

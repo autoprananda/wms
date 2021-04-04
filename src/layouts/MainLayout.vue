@@ -1,6 +1,9 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header 
+      elevated
+      class="text-white"
+      style="background:linear-gradient(to right, #ffffff , #0155a5)">
       <q-toolbar>
         <q-btn
           flat
@@ -8,36 +11,101 @@
           round
           icon="menu"
           aria-label="Menu"
+          color="primary"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-
-        <q-toolbar-title>
-          Quasar App
+        <!-- LOGO -->
+        <q-toolbar-title class="no-wrap">
+          <q-btn no-caps push :ripple="false" flat dense to="/dashboard" shrink>
+            <img src="../statics/logoproduct.png" style="max-width: 60px " />
+          </q-btn>
+          <q-btn push dense no-caps :ripple="false" flat shrink>
+          </q-btn>
         </q-toolbar-title>
+        <!-- // -->
+          <q-badge class="q-mt-sm q-mb-sm shadow-10 q-mr-xs" color="indigo-1">
+          <q-btn-group flat @click="showing = false">
+            <q-btn dense :ripple="false" flat no-caps color="white">
+              <img src="../statics/logobank.png" style="max-width: 100px;" />
+            </q-btn>
+            <q-btn dense :ripple="false" flat no-caps>
+              <q-icon name="arrow_drop_down" size="16px" color="primary" />
+            </q-btn>
 
-        <div>Quasar v{{ $q.version }}</div>
+            <q-btn flat round avatar>
+              <q-avatar class="absolute-center">
+                <img
+                  src="../statics/default-user-image.png"
+                />
+              </q-avatar>
+            </q-btn>
+
+            <!-- Dekstop -->
+            <q-menu
+              transition-show="flip-up"
+              transition-hide="flip-down"
+              filled
+              :offset="[6, 9]"
+              max-width="100%"
+              max-height="100%"
+              fit
+            >
+              <q-list bordered class="rounded-borders" style="width: 360px;">
+                <q-item class="  q-mb-sm">
+                  <q-item-section class="q-ml-sm q-mr-xs" avatar top>
+                    <q-btn
+                      class="q-mt-sm q-ml-xs shadow-3 cursor-pointer"
+                      round
+                    >
+                      <q-avatar size="100px">
+                        <img
+                          src="../statics/default-user-image.png"
+                        />
+                        <q-tooltip
+                          anchor="bottom right"
+                          self="bottom right"
+                          content-class="bg-grey-6"
+                          transition-show="scale"
+                          transition-hide="scale"
+                        >
+                          <q-icon size="xs" name="fas fa-camera" />
+                        </q-tooltip>
+                      </q-avatar>
+                    </q-btn>
+                    
+                  </q-item-section>
+                  <q-item-section top>
+                    <q-item-label lines="1" class="q-mt-sm q-mb-sm">
+                      <span class="text-weight-bold" style="font-size: 17px">{{
+                        data
+                      }}</span>
+                    </q-item-label>
+                    <q-item-label
+                      class="text-weight-bold "
+                      style="font-size: 12px"
+                      >{{ data }}</q-item-label
+                    >
+                    <q-item-label
+                      class="text-weight-bold q-mb-xs"
+                      style="font-size: 12px"
+                      >{{ data }}</q-item-label
+                    >
+                    <q-item-label
+                      class="text-weight-medium q-mb-xs"
+                      style="font-size: 12px"
+                      >{{ data }}</q-item-label
+                    >
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn-group>
+        </q-badge>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-1"
-    >
-      <q-list>
-        <q-item-label
-          header
-          class="text-grey-8"
-        >
-          Essential Links
-        </q-item-label>
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+      <Menulist />
     </q-drawer>
 
     <q-page-container>
@@ -47,60 +115,16 @@
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue'
+import Menulist from 'components/MenuList.vue'
 
-const linksData = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-];
 
 export default {
   name: 'MainLayout',
-  components: { EssentialLink },
+  components: { Menulist },
   data () {
     return {
       leftDrawerOpen: false,
-      essentialLinks: linksData
+      data: 'data'
     }
   }
 }
