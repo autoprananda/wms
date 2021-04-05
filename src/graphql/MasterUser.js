@@ -15,6 +15,7 @@ export const GetUser = gql`
     wms_m_user(where: {username: {_eq: $code}}) {
       password
       username
+      fullname
       id
     }
   }

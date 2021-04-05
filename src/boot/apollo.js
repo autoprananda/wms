@@ -36,7 +36,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 // Create the subscription websocket link
 const wsLink = new WebSocketLink({
-  uri: 'wss:/wms-dev.hasura.app/v1/graphql', // masih perlu setup websocket kong
+  uri: 'wss:/wms-dev.hasura.app/v1/graphql',
   options: {
     reconnect: true,
     connectionParams: {

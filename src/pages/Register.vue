@@ -9,7 +9,17 @@
            <br>
              <div class="row q-col-gutter-md">
                <div class="col-12">
-                 <q-input type="username" ref="username" @input="trim" outlined v-model="username" label="Ussername">
+                 <q-input type="fullname" ref="fullname" @input="trim" outlined v-model="fullname" label="Full Name">
+                   <template v-slot:prepend>
+                     <q-icon name="person" />
+                   </template>
+                   <template v-slot:append>
+                     <q-icon name="close" @click="fullname = ''" class="cursor-pointer" v-show="fullname" />
+                   </template>
+                 </q-input>
+               </div>
+               <div class="col-12">
+                 <q-input type="username" ref="username" @input="trim" outlined v-model="username" label="Username">
                    <template v-slot:prepend>
                      <q-icon name="person" />
                    </template>
@@ -67,7 +77,7 @@
 </template>
 
 <script>
-import { Register } from 'src/graphql/Register'
+import { Register } from 'src/graphql/MasterUser'
 import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
@@ -77,6 +87,7 @@ export default {
       tab: 'one',
       username: '',
       password: '',
+      fullname: '',
       passwordLast: '',
       confirmPassword: '',
       isPwd: true,
@@ -126,7 +137,8 @@ export default {
             variables: {
               objects: {
                 username: this.username,
-                password: this.passwordLast
+                password: this.passwordLast,
+                fullname: this.fullname
               }
             }
           })

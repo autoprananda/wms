@@ -166,7 +166,23 @@ const routes = [
       {
         path: 'submenu/view',
         component: () => import('pages/MasterSubMenuList/View.vue')
-      }
+      },
+      {
+        path: 'masterproduct',
+        component: () => import('pages/MasterProduct/Main.vue')
+      },
+      {
+        path: 'masterproduct/add',
+        component: () => import('pages/MasterProduct/Add.vue')
+      },
+      {
+        path: 'masterproduct/edit',
+        component: () => import('pages/MasterProduct/Edit.vue')
+      },
+      {
+        path: 'masterproduct/view',
+        component: () => import('pages/MasterProduct/View.vue')
+      },
     ]
   },
 

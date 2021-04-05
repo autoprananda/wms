@@ -86,7 +86,7 @@
 
 let init = ''
 
-import { GetUser } from 'src/graphql/Register'
+import { GetUser } from 'src/graphql/MasterUser'
 import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {

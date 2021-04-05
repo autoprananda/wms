@@ -57,7 +57,7 @@
                       class="q-mt-sm q-ml-xs shadow-3 cursor-pointer"
                       round
                     >
-                      <q-avatar size="100px">
+                      <q-avatar size="80px">
                         <img
                           src="../statics/default-user-image.png"
                         />
@@ -68,34 +68,31 @@
                           transition-show="scale"
                           transition-hide="scale"
                         >
-                          <q-icon size="xs" name="fas fa-camera" />
                         </q-tooltip>
                       </q-avatar>
                     </q-btn>
                     
                   </q-item-section>
                   <q-item-section top>
-                    <q-item-label lines="1" class="q-mt-sm q-mb-sm">
+                    <q-item-label  v-if="data.length !== 0" lines="1" class="q-mt-sm q-mb-sm">
                       <span class="text-weight-bold" style="font-size: 17px">{{
-                        data
+                        data[0].fullname
                       }}</span>
                     </q-item-label>
-                    <q-item-label
-                      class="text-weight-bold "
-                      style="font-size: 12px"
-                      >{{ data }}</q-item-label
-                    >
-                    <q-item-label
-                      class="text-weight-bold q-mb-xs"
-                      style="font-size: 12px"
-                      >{{ data }}</q-item-label
-                    >
-                    <q-item-label
-                      class="text-weight-medium q-mb-xs"
-                      style="font-size: 12px"
-                      >{{ data }}</q-item-label
-                    >
+                    <q-item-label>
+                      <div class="q-gutter-sm">
+                        <q-btn
+                          style="width:85px"
+                          color="negative"
+                          label="Logout"
+                          push
+                          size="xs"
+                          @click="LogoutDialog"
+                        />
+                      </div>
+                    </q-item-label>
                   </q-item-section>
+                  
                 </q-item>
               </q-list>
             </q-menu>
@@ -115,16 +112,83 @@
 </template>
 
 <script>
+let init = ''
 import Menulist from 'components/MenuList.vue'
-
-
+import { GetUser } from 'src/graphql/MasterUser'
 export default {
   name: 'MainLayout',
   components: { Menulist },
   data () {
     return {
       leftDrawerOpen: false,
-      data: 'data'
+      username: this.$q.sessionStorage.getItem('username'),
+      data: []
+    }
+  },
+  apollo: {
+    getDataUser: {
+      query: GetUser,
+      update: data => data.wms_m_user,
+      variables: {
+        code: init
+      }
+    }
+  },
+  mounted() {
+    this.getDataUser()
+  },
+  methods: {
+    getDataUser() {
+      this.$apollo.queries.getDataUser
+        .refetch({
+          code: this.username
+        })
+        .then(response => {
+          this.data = response.data.wms_m_user
+          console.log(this.data, 'Data User')
+        })
+    },
+    LogoutDialog() {
+      this.$q
+        .dialog({
+          title: 'Confirmation',
+
+          message: 'Are you sure to Logout ?',
+
+          persistent: true,
+
+          ok: {
+            label: 'Log Out',
+            textColor: '',
+            icon: 'logout',
+            color: 'negative'
+          },
+          cancel: {
+            label: 'no',
+            textColor: 'negative',
+            color: ''
+          }
+        })
+        .onOk(() => {
+          console.log('>>>> OK')
+          this.logout()
+        })
+
+        .onCancel(() => {
+          console.log('>>>> Cancel')
+        })
+    },
+    logout() {
+      setTimeout(() => {
+        sessionStorage.removeItem('username')
+        this.$q.notify({
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-check-circle',
+          message: 'You Have Been Logout'
+        })
+        this.$router.replace('/')
+      }, 2000)
     }
   }
 }

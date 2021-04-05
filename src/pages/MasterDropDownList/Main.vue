@@ -68,7 +68,7 @@
               <q-card-section>
                 <q-table
                   class="q-ml-sm q-mr-sm table-label-color"
-                  title="Area List"
+                  title="Dropdown List"
                   :grid="$q.screen.xs"
                   :data="loaddata"
                   :columns="columns"

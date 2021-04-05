@@ -313,7 +313,7 @@ export default {
     onDelete() {
       setTimeout(() => {
         this.$apollo.mutate({
-          mutation: DelMasterCountries,
+          mutation: DelBranch,
           variables: {
             code: this.selected[0].id_branch
           }
