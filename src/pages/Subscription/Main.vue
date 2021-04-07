@@ -5,7 +5,7 @@
         <q-card-section>
           <q-breadcrumbs>
             <q-breadcrumbs-el label="Home" icon="home" to="/dashboard" />
-            <q-breadcrumbs-el label="Customer" icon="fas fa-user" />
+            <q-breadcrumbs-el label="Subscription" icon="fas fa-hand-holding-usd" />
           </q-breadcrumbs>
         </q-card-section>
         <q-separator inset />
@@ -13,58 +13,14 @@
         <transition appear enter-active-class="animated zoomIn">
           <q-card-section>
             <form>
-              <div class="row">
-                <div class="q-ml-md q-mb-sm q-mr-md q-gutter-sm">
-                  <q-btn
-                    style="width: 80px"
-                    @click="onRefresh"
-                    color="grey-9"
-                    icon="ion-refresh"
-                    v-ripple
-                  >
-                    <q-tooltip>Refresh</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    @click="onAdd"
-                    color="primary"
-                    icon="ion-add"
-                    v-ripple
-                  >
-                    <q-tooltip>Add</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    @click="onView"
-                    :disable="selected.length === 0"
-                    color="cyan-7"
-                    icon="far fa-eye"
-                    v-ripple
-                  >
-                    <q-tooltip>View</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    @click="onUpdate"
-                    :disable="selected.length === 0"
-                    color="accent"
-                    icon="fas fa-pencil-alt"
-                    v-ripple
-                  >
-                    <q-tooltip>Edit</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    color="negative"
-                    @click="deleteDialog"
-                    :disable="selected.length === 0"
-                    icon="eva-trash-2"
-                    v-ripple
-                  >
-                    <q-tooltip>Delete</q-tooltip>
-                  </q-btn>
+              <q-card-section>
+                <div class="q-gutter-md">
+                  <q-btn color="primary" label="Subscribe" @click="onSubscribe"
+                    :disable="selected.length === 0" />
+                  <q-btn color="accent" label="View Subscription" @click="onView"
+                    :disable="selected.length === 0" />
                 </div>
-              </div>
+              </q-card-section>
               <q-card-section>
                 <q-table
                   class="q-ml-sm q-mr-sm table-label-color"
@@ -249,16 +205,17 @@ export default {
 
       this.selected = []
     },
-    onAdd() {
-      this.$router.push({ path: '/customer/add' })
+    onSubscribe() {
+      localStorage.setItem('selectedData', JSON.stringify(this.selected))
+      this.$router.push({ path: '/subscription/add' })
     },
     onUpdate() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected))
-      this.$router.push({ path: '/customer/edit' })
+      this.$router.push({ path: '/subscription/edit' })
     },
     onView() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected[0]))
-      this.$router.push({ path: '/customer/view' })
+      this.$router.push({ path: '/subscription/view' })
     },
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))

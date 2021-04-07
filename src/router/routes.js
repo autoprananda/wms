@@ -183,6 +183,46 @@ const routes = [
         path: 'masterproduct/view',
         component: () => import('pages/MasterProduct/View.vue')
       },
+      {
+        path: 'customer',
+        component: () => import('pages/Customer/Main.vue')
+      },
+      {
+        path: 'customer/add',
+        component: () => import('pages/Customer/Add.vue')
+      },
+      {
+        path: 'customer/edit',
+        component: () => import('pages/Customer/Edit.vue')
+      },
+      {
+        path: 'customer/view',
+        component: () => import('pages/Customer/View.vue')
+      },
+      {
+        path: 'navupload',
+        component: () => import('pages/NavUpload/Main.vue')
+      },
+      {
+        path: 'navupload/add',
+        component: () => import('pages/NavUpload/Add.vue')
+      },
+      {
+        path: 'navupload/edit',
+        component: () => import('pages/NavUpload/Edit.vue')
+      },
+      {
+        path: 'navupload/view',
+        component: () => import('pages/NavUpload/View.vue')
+      },
+      {
+        path: 'subscription',
+        component: () => import('pages/Subscription/Main.vue')
+      },
+      {
+        path: 'subscription/add',
+        component: () => import('pages/Subscription/Add.vue')
+      }
     ]
   },
 

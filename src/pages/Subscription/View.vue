@@ -59,9 +59,8 @@
                             align="justify"
                             inline-label
                           >
-                            <q-tab label="Product & Bank Info" name="one" />
-                            <q-tab label="Settlement Info" name="two" />
-                            <q-tab label="Fee Structure" name="three" />
+                            <q-tab data-vv-name="Tab Product & Bank Info" label="Product & Bank Info" name="one" />
+                            <q-tab data-vv-name="Tab Settlement Info" label="Settlement Info" name="two" />
                           </q-tabs>
 
                           <q-separator />
@@ -265,54 +264,6 @@
                                 </div>
                               </div>
                             </q-tab-panel>
-                            <q-tab-panel name="three">
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                  <q-card class="q-mt-md shadow-3">
-                                    <q-card-section>
-                                      <div
-                                        class="col text-weight-bolder text-subtitle1 q-mb-sm"
-                                      >Fee Structure</div>
-                                      <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
-                                        <div class="row q-col-gutter-md">
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-field Standard label="Tax" stack-label>
-                                              <template v-slot:control>
-                                                <div class="self-center full-width no-outline" tabindex="0">{{ Tax }}
-                                                </div>
-                                              </template>
-                                            </q-field>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-field Standard label="Tax Rate" stack-label>
-                                              <template v-slot:control>
-                                                <div class="self-center full-width no-outline" tabindex="0">{{ TaxRate }}
-                                                </div>
-                                              </template>
-                                            </q-field>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-field Standard label="Subscription Fee (%) *" stack-label>
-                                              <template v-slot:control>
-                                                <div class="self-center full-width no-outline" tabindex="0">{{ SubscriptionFee }}
-                                                </div>
-                                              </template>
-                                            </q-field>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-field Standard label="Redemption Fee (%) *" stack-label>
-                                              <template v-slot:control>
-                                                <div class="self-center full-width no-outline" tabindex="0">{{ RedemptionFee }}
-                                                </div>
-                                              </template>
-                                            </q-field>
-                                            
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </q-card-section>
-                                  </q-card>
-                                </div>
-                              </q-tab-panel>
                           </q-tab-panels>
                         </q-card-section>
                       </q-card>
@@ -359,13 +310,6 @@ export default {
       DevidendReinvested: '',
       AccountNumber: '',
       AccountName: '',
-      //
-      RedemptionFee: 0,
-      SubscriptionFee: 0,
-      TaxRate: 0,
-      optTax: [],
-      Tax: '',
-      //
       AutoSubscription: false,
       tab: 'one',
       selected: JSON.parse(localStorage.selectedData)
@@ -381,10 +325,6 @@ export default {
   },
   methods: {
     onBindData() {
-      this.Tax = this.selected.tax.dropdown_details_desc
-      this.TaxRate = this.selected.tax_rate
-      this.SubscriptionFee = this.selected.subs_fee
-      this.RedemptionFee = this.selected.redempt_fee
       this.ProductCode = this.selected.product_code
       this.Description = this.selected.prod_desc
       this.ProductCategory = this.selected.product_category.dropdown_details_desc

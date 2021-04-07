@@ -5,7 +5,7 @@
         <q-card-section>
           <q-breadcrumbs>
             <q-breadcrumbs-el label="Home" icon="home" to="/dashboard" />
-            <q-breadcrumbs-el label="Customer" icon="fas fa-user" />
+            <q-breadcrumbs-el label="Nav" icon="fas fa-hand-holding-usd" />
           </q-breadcrumbs>
         </q-card-section>
         <q-separator inset />
@@ -68,11 +68,11 @@
               <q-card-section>
                 <q-table
                   class="q-ml-sm q-mr-sm table-label-color"
-                  title="Customer List"
+                  title="Nav List"
                   :grid="$q.screen.xs"
                   :data="loaddata"
                   :columns="columns"
-                  row-key="gcif_number"
+                  row-key="id"
                   selection="single"
                   :selected.sync="selected"
                   separator="cell"
@@ -103,14 +103,12 @@
                         <q-checkbox dense v-model="props.selected"></q-checkbox>
                       </q-td>
                       <q-td
-                        key="gcif_number"
+                        key="nav_date"
                         :props="props"
                         class="cursor-pointer"
                         @click.native="onViewclick(props.row)"
-                      >{{ props.row.gcif_number }}</q-td>
-                      <q-td key="fullname" :props="props">{{ props.row.fullname }}</q-td>
-                       <q-td key="sales_name" :props="props">{{ props.row.sales_name }}</q-td>
-                        <q-td key="branch.branch_name" :props="props">{{ props.row.branch.branch_name }}</q-td>
+                      >{{ props.row.nav_date }}</q-td>
+                      <q-td key="nav_amount" :props="props">{{ props.row.nav_amount }}</q-td>
                      <q-td key="WMS_Info" style="width: 1px">
                         <div class="center">
                           <q-icon color="grey" name="fas fa-info-circle" size="25px">
@@ -173,9 +171,9 @@
 </template>
 
 <script>
-import { getDataCustomer, DeleteCustomer } from 'src/graphql/Customer/Customer'
+import { ViewNav, DeleteNav } from 'src/graphql/NavUpload'
 export default {
-  name: 'MainCustomer',
+  name: 'MainNavUpload',
   data() {
     return {
       loaddata: [],
@@ -187,30 +185,18 @@ export default {
       },
       columns: [
         {
-          name: 'gcif_number',
-          label: 'GCIF Number',
-          field: row => row.gcif_number,
+          name: 'nav_date',
+          label: 'Nav Date',
+          field: row => row.nav_date ,
           format: val => `${val}`,
           align: 'Left',
           sortable: true
         },
         {
-          name: 'fullname',
-          label: 'Full Name',
+          name: 'nav_amount',
+          label: 'Nav Amount',
           align: 'Left',
-          field: row => row.fullname
-        },
-        {
-          name: 'sales_name',
-          label: 'Sales Name',
-          align: 'Left',
-          field: row => row.sales_name
-        },
-        {
-          name: 'branch.branch_name',
-          label: 'Branch Name',
-          align: 'Left',
-          field: row => row.branch.branch_name
+          field: row => row.nav_amount
         },
         {
           name: 'WMS_Info',
@@ -222,8 +208,8 @@ export default {
   },
   apollo: {
     loaddata: {
-      query: getDataCustomer,
-      update: data => data.wms_customer
+      query: ViewNav,
+      update: data => data.wms_nav
     }
   },
   mounted() {
@@ -250,26 +236,26 @@ export default {
       this.selected = []
     },
     onAdd() {
-      this.$router.push({ path: '/customer/add' })
+      this.$router.push({ path: '/navupload/add' })
     },
     onUpdate() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected))
-      this.$router.push({ path: '/customer/edit' })
+      this.$router.push({ path: '/navupload/edit' })
     },
     onView() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected[0]))
-      this.$router.push({ path: '/customer/view' })
+      this.$router.push({ path: '/navupload/view' })
     },
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
-      this.$router.push({ path: '/customer/view' })
+      this.$router.push({ path: '/navupload/view' })
     },
     onDelete() {
       setTimeout(() => {
         this.$apollo.mutate({
-          mutation: DeleteCustomer,
+          mutation: DeleteNav,
           variables: {
-            code: this.selected[0].gcif_number
+            code: this.selected[0].id
           }
         })
         this.submitting = false

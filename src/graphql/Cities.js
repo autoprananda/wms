@@ -29,7 +29,7 @@ export const GetMasterCities = gql`
 `
 // delete WMS_Corporate_Message
 export const DelMasterCities = gql`
-  mutation delete_wms_cities($code: int!) {
+  mutation delete_wms_cities($code: Int!) {
     delete_wms_cities(where: { id_city: { _eq: $code } }) {
       affected_rows
     }

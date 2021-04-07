@@ -88,6 +88,15 @@ export const GetAllMasterProdCode = gql`
         dropdown_details_code
         id_dropdownlist_detail
       }
+      id_tax
+      tax {
+        dropdown_details_desc
+        id_dropdownlist_detail
+        dropdown_details_code
+      }
+      tax_rate
+      subs_fee
+      redempt_fee
     }
   }
 `
@@ -120,6 +129,44 @@ export const InsertProduct = gql`
   ) {
     insert_wms_products(objects: $objects) {
       affected_rows
+    }
+  }
+`
+export const getProduct = gql`
+  query wms_products {
+    wms_products(order_by: { id_product: desc }) {
+    id_product
+    product_code
+    prod_desc
+      currencies {
+        id
+        currencies_desc
+        currencies_code
+      }
+      mutual_fund {
+        dropdown_details_code
+        dropdown_details_desc
+        id_dropdownlist_detail
+      }
+      method_of_sales {
+        dropdown_details_desc
+        dropdown_details_code
+        id_dropdownlist_detail
+      }
+      distribution_of_sales {
+        dropdown_details_code
+        dropdown_details_desc
+        id_dropdownlist_detail
+      }
+      id_tax
+      tax {
+        dropdown_details_desc
+        id_dropdownlist_detail
+        dropdown_details_code
+      }
+      tax_rate
+      subs_fee
+      redempt_fee
     }
   }
 `

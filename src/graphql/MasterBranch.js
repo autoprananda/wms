@@ -33,10 +33,8 @@ query wms_branches {
 export const GetBranch = gql`
 query wms_branches {
   wms_branches {
-    id_branch
-    branch_code
-    branch_manager_name
     branch_name
+    id_branch
   }
 }
 `

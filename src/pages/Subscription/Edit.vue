@@ -68,17 +68,14 @@
                               inline-label
                             >
                               <q-tab
+                                data-vv-name="Tab Product & Bank Info"
                                 label="Product & Bank Info"
                                 name="one"
                               />
                               <q-tab
+                                data-vv-name="Tab Settlement Info"
                                 label="Settlement Info"
                                 name="two"
-                              >
-                              </q-tab>
-                              <q-tab
-                                label="Fee Structure"
-                                name="three"
                               >
                               </q-tab>
                             </q-tabs>
@@ -388,66 +385,6 @@
                                   </div>
                                 </div>
                               </q-tab-panel>
-                              <q-tab-panel name="three">
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                  <q-card class="q-mt-md shadow-3">
-                                    <q-card-section>
-                                      <div
-                                        class="col text-weight-bolder text-subtitle1 q-mb-sm"
-                                      >Fee Structure</div>
-                                      <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
-                                        <div class="row q-col-gutter-md">
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-select
-                                              outlined
-                                              v-model="Tax"
-                                              :options="optTax"
-                                              stack-label
-                                              :option-label="
-                                            optTax =>
-                                              optTax.dropdown_details_desc
-                                          "
-                                              :option-value="optTax => optTax"
-                                              emit-value
-                                              map-options
-                                              label="Tax *"
-                                            >
-                                            </q-select>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-input
-                                              outlined
-                                              v-model="TaxRate"
-                                              label="Tax Rate *"
-                                              stack-label
-                                            >
-                                            </q-input>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-input
-                                              outlined
-                                              v-model="SubscriptionFee"
-                                              label="Subscription Fee (%) *"
-                                              stack-label
-                                              
-                                            >
-                                            </q-input>
-                                          </div>
-                                          <div class="col-xs-12 col-sm-6 col-md-6">
-                                            <q-input
-                                              outlined
-                                              v-model="RedemptionFee"
-                                              label="Redemption Fee (%) *"
-                                              stack-label
-                                            >
-                                            </q-input>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </q-card-section>
-                                  </q-card>
-                                </div>
-                              </q-tab-panel>
                             </q-tab-panels>
                           </q-card-section>
                         </q-card>
@@ -522,12 +459,7 @@ export default {
       oldcode: '',
       AccountName: null,
       AccountNumber: null,
-      //
-      RedemptionFee: 0,
-      SubscriptionFee: 0,
-      TaxRate: 0,
-      optTax: [],
-      Tax: '',
+
       //
       ActiveTab: '',
       tab: 'one',
@@ -537,13 +469,6 @@ export default {
     }
   },
   apollo: {
-    optTax: {
-      query: GetDropDown,
-      update: data => data.wms_dropdownlist_details,
-      variables: {
-        code: 'Yes / No'
-      }
-    },
     optProductCategory: {
       query: GetDropDown,
       update: data => data.wms_dropdownlist_details,
@@ -661,10 +586,6 @@ export default {
               prod_desc: this.Description,
               product_code: this.ProductCode,
               remark: this.Remark,
-              id_tax: this.Tax.id_dropdownlist_detail,
-              tax_rate: this.TaxRate,
-              subs_fee: this.SubscriptionFee,
-              redempt_fee: this.RedemptionFee,
               modified_date: this.now,
               modified_by: this.user
             }
