@@ -131,7 +131,7 @@
 <script>
 import { getDataCustomer, DeleteCustomer } from 'src/graphql/Customer/Customer'
 export default {
-  name: 'MainCustomer',
+  name: 'MainSubcription',
   data() {
     return {
       loaddata: [],
@@ -184,6 +184,7 @@ export default {
   },
   mounted() {
     this.$q.loading.show()
+    localStorage.removeItem('selectedData')
     this.onRefresh()
   },
 
@@ -215,11 +216,11 @@ export default {
     },
     onView() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected[0]))
-      this.$router.push({ path: '/subscription/view' })
+      this.$router.push({ path: '/subscription/viewlist' })
     },
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
-      this.$router.push({ path: '/customer/view' })
+      this.$router.push({ path: '/subscription/viewlist' })
     },
     onDelete() {
       setTimeout(() => {

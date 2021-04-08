@@ -141,7 +141,6 @@
                                                     today-btn
                                                     v-model="IDNumberRegistrationDate"
                                                     mask="YYYY-MM-DD"
-                                                    @input="() => $refs.qDateProxy1.hide()"
                                                   />
                                                 </q-popup-proxy>
                                               </q-icon>
@@ -166,7 +165,6 @@
                                                     today-btn
                                                     v-model="IDExpirationDate"
                                                     mask="YYYY-MM-DD"
-                                                    @input="() => $refs.qDateProxy2.hide()"
                                                   />
                                                 </q-popup-proxy>
                                               </q-icon>
@@ -314,7 +312,6 @@
                                                 <q-date
                                                   v-model="DateOfBirth"
                                                   mask="YYYY-MM-DD"
-                                                  @input="() => $refs.qDateProxy3.hide()"
                                                 />
                                               </q-popup-proxy>
                                             </q-icon>
@@ -1277,7 +1274,7 @@ export default {
         })
         .onOk(() => {
           console.log('>>>> OK')
-          this.$router.push({ path: '/area' })
+          this.$router.push({ path: '/customer' })
         })
 
         .onCancel(() => {

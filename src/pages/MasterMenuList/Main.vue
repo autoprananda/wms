@@ -232,6 +232,7 @@ export default {
   },
   mounted() {
     this.$q.loading.show()
+    localStorage.removeItem('selectedData')
     this.onRefresh()
   },
 

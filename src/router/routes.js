@@ -222,7 +222,31 @@ const routes = [
       {
         path: 'subscription/add',
         component: () => import('pages/Subscription/Add.vue')
-      }
+      },
+      {
+        path: 'subscription/viewlist',
+        component: () => import('pages/Subscription/ViewList.vue')
+      },
+      {
+        path: 'subscription/view',
+        component: () => import('pages/Subscription/View.vue')
+      },
+      {
+        path: 'redemption',
+        component: () => import('pages/Redemption/Main.vue')
+      },
+      {
+        path: 'redemption/add',
+        component: () => import('pages/Redemption/Add.vue')
+      },
+      {
+        path: 'redemption/viewlist',
+        component: () => import('pages/Redemption/ViewList.vue')
+      },
+      {
+        path: 'redemption/view',
+        component: () => import('pages/Redemption/View.vue')
+      },
     ]
   },
 

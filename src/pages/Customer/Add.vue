@@ -1273,8 +1273,41 @@ export default {
       })
     },
     ClearButton() {
-      this.AreaName = ''
-      this.AreaCode = ''
+      this.Nationality = ''
+      this.CountryOfNationality = ''
+      this.IDType = ''
+      this.IDNumber = ''
+      this.IDNumberRegistrationDate = ''
+      this.IDExpirationDate = ''
+      this.Status = ''
+
+      this.Salutation = ''
+      this.FirstName = ''
+      this.MiddleName = ''
+      this.LastName = ''
+      this.Gender = ''
+      this.PlaceOfBirth = ''
+      this.CountryOfBirth = ''
+      this.DateOfBirth = ''
+      this.Religion = ''
+      this.MaritalStatus = ''
+      this.MotherMaidenName = ''
+
+      this.EducationalBackground = ''
+      this.InvestmentObjective = ''
+      this.IncomeLevel = ''
+
+      this.GlobalCifNumber = ''
+      this.SalesName = ''
+      this.BranchName = ''
+      this.RegistrationDate = ''
+      this.DateLastUpdate = ''
+      this.LobCode = ''
+      this.CustomerGroup = ''
+
+      this.TaxIdNumber = ''
+      this.TinForeignTin = ''
+      this.IssuanceCountry = ''
 
       setTimeout(() => {
         // delay simulated, we are done,
@@ -1342,7 +1375,7 @@ export default {
         })
         .onOk(() => {
           console.log('>>>> OK')
-          this.$router.push({ path: '/area' })
+          this.$router.push({ path: '/customer' })
         })
 
         .onCancel(() => {

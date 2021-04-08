@@ -527,7 +527,7 @@ export default {
       SubscriptionFee: 0,
       TaxRate: 0,
       optTax: [],
-      Tax: '',
+      Tax: {},
       //
       ActiveTab: '',
       tab: 'one',
@@ -713,6 +713,10 @@ export default {
       this.DevidendReinvested.dropdown_details_desc = this.selected[0].dividend_reinvested.dropdown_details_desc
       this.AccountName = this.selected[0].account_name
       this.AccountNumber = this.selected[0].account_number
+      this.Tax.dropdown_details_desc = this.selected[0].tax.dropdown_details_desc
+      this.TaxRate = this.selected[0].tax_rate
+      this.SubscriptionFee = this.selected[0].subs_fee
+      this.RedemptionFee = this.selected[0].redempt_fee
     },
     SubmitDialog() {
       this.$q

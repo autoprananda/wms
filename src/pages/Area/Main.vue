@@ -109,7 +109,7 @@
                         @click.native="onViewclick(props.row)"
                       >{{ props.row.area_code }}</q-td>
                       <q-td key="area_name" :props="props">{{ props.row.area_name }}</q-td>
-                     <q-td key="WMS_Info" style="width: 1px">
+                      <q-td key="WMS_Info" style="width: 1px">
                         <div class="center">
                           <q-icon color="grey" name="fas fa-info-circle" size="25px">
                             <q-tooltip
@@ -214,6 +214,7 @@ export default {
   },
   mounted() {
     this.$q.loading.show()
+    localStorage.removeItem('selectedData')
     this.onRefresh()
   },
 

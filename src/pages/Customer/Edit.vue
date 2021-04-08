@@ -1573,7 +1573,7 @@ export default {
         })
         .onOk(() => {
           console.log('>>>> OK')
-          this.$router.push({ path: '/area' })
+          this.$router.push({ path: '/customer' })
         })
 
         .onCancel(() => {

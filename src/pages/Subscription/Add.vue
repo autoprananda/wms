@@ -1,572 +1,563 @@
 <template>
   <div>
-    <div>
-      <q-page padding>
-        <q-card bordered>
-          <q-card-section>
-            <q-breadcrumbs>
-              <q-breadcrumbs-el label="Home" icon="home" to="/dashboard" />
-              <q-breadcrumbs-el
-                label="Subscriptions"
-                icon="fas fa-hand-holding-usd"
-                to="/subscription"
-              />
-              <q-breadcrumbs-el label="Subscribe" icon="fas fa-user-plus" />
-            </q-breadcrumbs>
-          </q-card-section>
+    <q-page padding>
+      <q-card bordered>
+        <q-card-section>
+          <q-breadcrumbs>
+            <q-breadcrumbs-el label="Home" icon="home" to="/dashboard" />
+            <q-breadcrumbs-el
+              label="Subscriptions"
+              icon="fas fa-hand-holding-usd"
+              to="/subscription"
+            />
+            <q-breadcrumbs-el label="Subscribe" icon="fas fa-user-plus" />
+          </q-breadcrumbs>
+        </q-card-section>
 
-          <q-separator inset />
+        <q-separator inset />
 
-          <q-card-section>
-            <transition appear enter-active-class="animated zoomIn">
-              <q-card class="my-card shadow-6 center" inline>
-                <q-card-section>
-                  <form @submit.prevent>
-                    <q-card-section>
-                      <div class="q-gutter-sm">
-                        <q-btn
-                          label="Submit"
-                          @click="SubmitDialog"
-                          color="accent"
-                          style="width: 80px"
-                        ></q-btn>
-                        <q-btn
-                          @click="CancelDialog"
-                          label="Cancel"
-                          color="negative"
-                          style="width: 80px"
-                        ></q-btn>
-                      </div>
-                    </q-card-section>
-                    <q-card-section>
-                      <div class="row q-col-gutter-md">
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                          <q-field outlined label="GCIF" stack-label>
-                            <template v-slot:control>
-                              <div
-                                class="self-center full-width no-outline"
-                                tabindex="0"
-                              >
-                                {{ Gcif }}
-                              </div>
-                            </template>
-                          </q-field>
-                        </div>
-                        <div class="col-xs-12 col-sm-6 col-md-6">
-                          <q-field outlined label="Name" stack-label>
-                            <template v-slot:control>
-                              <div
-                                class="self-center full-width no-outline"
-                                tabindex="0"
-                              >
-                                {{ Customer }}
-                              </div>
-                            </template>
-                          </q-field>
-                        </div>
-                        <div class="col-xs-12 col-sm-3 col-md-3">
-                          <q-select
-                            stack-label
-                            outlined
-                            v-model="ProductCategory"
-                            :options="optProductCategory"
-                            emit-value
-                            map-options
-                            :option-label="
-                              optProductCategory =>
-                                optProductCategory.dropdown_details_desc
-                            "
-                            :option-value="
-                              optProductCategory => optProductCategory
-                            "
-                            label="Product Category *"
-                          >
-                          </q-select>
-                        </div>
-                        <div class="col-xs-12 col-sm-5 col-md-5">
-                          <q-select
-                            stack-label
-                            outlined
-                            v-model="Product"
-                            :options="optProduct"
-                            label="Product *"
-                            :option-label="optProduct => optProduct.prod_desc"
-                            :option-value="optProduct => optProduct"
-                            @input="resetValueProduct"
-                          >
-                          </q-select>
-                        </div>
-                        <div class="col-xs-12 col-sm-2 col-md-2">
-                          <q-field outlined label="Currency" stack-label>
-                            <template v-slot:control>
-                              <div
-                                class="self-center full-width no-outline"
-                                tabindex="0"
-                              >
-                                {{ Currency }}
-                              </div>
-                            </template>
-                          </q-field>
-                        </div>
-                        <div class="col-xs-12 col-sm-5 col-md-5">
-                          <q-field outlined label="Opening Date" stack-label>
-                            <template v-slot:prepend>
-                              <q-icon name="event" />
-                            </template>
-                            <template v-slot:control>
-                              <div
-                                class="self-center full-width no-outline"
-                                tabindex="0"
-                              >
-                                {{ OpeningDate }}
-                              </div>
-                            </template>
-                          </q-field>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                          <q-input
-                            outlined
-                            v-model="Remark"
-                            label="Remark"
-                            stack-label
-                            type="textarea"
-                            float-label="Textarea"
-                            :max-height="100"
-                            rows="5"
-                          />
-                        </div>
-                      </div>
-                    </q-card-section>
-
-                    <q-card-section>
-                      <transition appear enter-active-class="animated zoomIn">
-                        <q-card
-                          class="my-card shadow-6 center q-mt-md"
-                          inline
-                          style
-                        >
-                          <q-card-section>
-                            <q-tabs
-                              v-model="tab"
-                              active-color="primary"
-                              indicator-color="primary"
-                              class="text-grey"
-                              align="justify"
-                              inline-label
+        <q-card-section>
+          <transition appear enter-active-class="animated zoomIn">
+            <q-card class="my-card shadow-6 center" inline>
+              <q-card-section>
+                <form @submit.prevent>
+                  <q-card-section>
+                    <div class="q-gutter-sm">
+                      <q-btn
+                        label="Submit"
+                        @click="SubmitDialog"
+                        color="accent"
+                        style="width: 80px"
+                      ></q-btn>
+                      <q-btn
+                        @click="CancelDialog"
+                        label="Cancel"
+                        color="negative"
+                        style="width: 80px"
+                      ></q-btn>
+                    </div>
+                  </q-card-section>
+                  <q-card-section>
+                    <div class="row q-col-gutter-md">
+                      <div class="col-xs-12 col-sm-3 col-md-3">
+                        <q-field outlined label="GCIF" stack-label>
+                          <template v-slot:control>
+                            <div
+                              class="self-center full-width no-outline"
+                              tabindex="0"
                             >
-                              <q-tab
-                                label="Transaction"
-                                name="one"
-                              />
-                              <q-tab
-                                label="Bank Account"
-                                name="two"
-                              />
-                              <q-tab
-                                label="More Info"
-                                name="three"
-                              >
-                              </q-tab>
-                            </q-tabs>
-                            <q-separator />
+                              {{ Gcif }}
+                            </div>
+                          </template>
+                        </q-field>
+                      </div>
+                      <div class="col-xs-12 col-sm-6 col-md-6">
+                        <q-field outlined label="Name" stack-label>
+                          <template v-slot:control>
+                            <div
+                              class="self-center full-width no-outline"
+                              tabindex="0"
+                            >
+                              {{ Customer }}
+                            </div>
+                          </template>
+                        </q-field>
+                      </div>
+                      <div class="col-xs-12 col-sm-3 col-md-3">
+                        <q-select
+                          stack-label
+                          outlined
+                          v-model="ProductCategory"
+                          :options="optProductCategory"
+                          emit-value
+                          map-options
+                          :option-label="
+                            optProductCategory =>
+                              optProductCategory.dropdown_details_desc
+                          "
+                          :option-value="
+                            optProductCategory => optProductCategory
+                          "
+                          label="Product Category *"
+                        >
+                        </q-select>
+                      </div>
+                      <div class="col-xs-12 col-sm-5 col-md-5">
+                        <q-select
+                          stack-label
+                          outlined
+                          v-model="Product"
+                          :options="optProduct"
+                          label="Product *"
+                          :option-label="optProduct => optProduct.prod_desc"
+                          :option-value="optProduct => optProduct"
+                          @input="resetValueProduct"
+                        >
+                        </q-select>
+                      </div>
+                      <div class="col-xs-12 col-sm-2 col-md-2">
+                        <q-field outlined label="Currency" stack-label>
+                          <template v-slot:control>
+                            <div
+                              class="self-center full-width no-outline"
+                              tabindex="0"
+                            >
+                              {{ Currency }}
+                            </div>
+                          </template>
+                        </q-field>
+                      </div>
+                      <div class="col-xs-12 col-sm-5 col-md-5">
+                        <q-field outlined label="Opening Date" stack-label>
+                          <template v-slot:prepend>
+                            <q-icon name="event" />
+                          </template>
+                          <template v-slot:control>
+                            <div
+                              class="self-center full-width no-outline"
+                              tabindex="0"
+                            >
+                              {{ OpeningDate }}
+                            </div>
+                          </template>
+                        </q-field>
+                      </div>
+                      <div class="col-xs-12 col-sm-12 col-md-12">
+                        <q-input
+                          outlined
+                          v-model="Remark"
+                          label="Remark"
+                          stack-label
+                          type="textarea"
+                          float-label="Textarea"
+                          :max-height="100"
+                          rows="5"
+                        />
+                      </div>
+                    </div>
+                  </q-card-section>
 
-                            <q-tab-panels v-model="tab" animated>
-                              <q-tab-panel name="one">
-                                <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
-                                  <div class="row q-col-gutter-md">
-                                    <div class="col-xs-12 col-sm-3 col-md-3">
-                                      <q-radio
-                                        class="text-bold"
-                                        v-model="Shape"
-                                        val="HitungGross"
-                                        label="Perhitungan Gross"
-                                        @input="changeCalculation"
-                                      />
-                                    </div>
-                                    <div class="col-xs-12 col-sm-3 col-md-3">
-                                      <q-radio
-                                        class="text-bold"
-                                        v-model="Shape"
-                                        val="HitungNet"
-                                        label="Perhitungan Net"
-                                        @input="changeCalculation"
-                                      />
-                                    </div>
-                                  </div>
-                                  <br />
+                  <q-card-section>
+                    <transition appear enter-active-class="animated zoomIn">
+                      <q-card
+                        class="my-card shadow-6 center q-mt-md"
+                        inline
+                        style
+                      >
+                        <q-card-section>
+                          <q-tabs
+                            v-model="tab"
+                            active-color="primary"
+                            indicator-color="primary"
+                            class="text-grey"
+                            align="justify"
+                            inline-label
+                          >
+                            <q-tab
+                              label="Transaction"
+                              name="one"
+                            />
+                            <q-tab
+                              label="Bank Account"
+                              name="two"
+                            />
+                            <q-tab
+                              label="More Info"
+                              name="three"
+                            >
+                            </q-tab>
+                          </q-tabs>
+                          <q-separator />
 
-                                  <div class="row q-col-gutter-md">
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                      <q-input
-                                        :disable="Product === null"
-                                        outlined
-                                        v-model="SubscriptionAmount"
-                                        stack-label
-                                        label="Subscription Amount"
-                                        @input="ResetCalculate()"
-                                      >
-                                      </q-input>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                    <q-field outlined label="Net Fee Amount" stack-label>
-                                      <template v-slot:control>
-                                        <div class="self-center full-width no-outline" tabindex="0">
-                                          {{ NetFeeAmount }}
-                                        </div>
-                                      </template>
-                                    </q-field>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                      <q-field outlined label="Tax Fee Amount" stack-label>
-                                      <template v-slot:control>
-                                        <div class="self-center full-width no-outline" tabindex="0">
-                                          {{ TaxFeeAmount }}
-                                        </div>
-                                      </template>
-                                    </q-field>
-                                    </div>
+                          <q-tab-panels v-model="tab" animated>
+                            <q-tab-panel name="one">
+                              <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
+                                <div class="row q-col-gutter-md">
+                                  <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <q-radio
+                                      class="text-bold"
+                                      v-model="Shape"
+                                      val="HitungGross"
+                                      label="Perhitungan Gross"
+                                      @input="changeCalculation"
+                                    />
                                   </div>
-                                  <br />
-                                  <div class="row q-col-gutter-md">
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                      <div class="q-gutter-md">
-                                        <q-btn
-                                          style="width: 140px"
-                                          color="primary"
-                                          label="Calculate"
-                                          :disable="SubscriptionAmount === 0"
-                                          @click="onCalculate"
-                                        >
-                                        </q-btn>
-                                      </div>
-                                    </div>
+                                  <div class="col-xs-12 col-sm-3 col-md-3">
+                                    <q-radio
+                                      class="text-bold"
+                                      v-model="Shape"
+                                      val="HitungNet"
+                                      label="Perhitungan Net"
+                                      @input="changeCalculation"
+                                    />
                                   </div>
-                                  <br />
-                                  <div class="row q-col-gutter-md">
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                      <q-field outlined label="Total Fee Amount" stack-label>
-                                      <template v-slot:control>
-                                        <div class="self-center full-width no-outline" tabindex="0">
-                                          {{ formatCurrency2(TotalFeeAmount) }}
-                                        </div>
-                                      </template>
-                                    </q-field>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                      <q-field outlined label="Total Subscription Amount" stack-label>
-                                      <template v-slot:control>
-                                        <div class="self-center full-width no-outline" tabindex="0">
-                                          {{ formatCurrency2(TotalSubscription) }}
-                                        </div>
-                                      </template>
-                                    </q-field>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                      <div
-                                        class="float-right q-mt-md text-subtitle1 text-bold"
-                                      >
-                                        Total Payment Amount :
+                                </div>
+                                <br />
+
+                                <div class="row q-col-gutter-md">
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <q-input
+                                      :disable="Product === null"
+                                      outlined
+                                      v-model="SubscriptionAmount"
+                                      stack-label
+                                      label="Subscription Amount"
+                                      @input="ResetCalculate()"
+                                    >
+                                    </q-input>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                  <q-field outlined label="Net Fee Amount" stack-label>
+                                    <template v-slot:control>
+                                      <div class="self-center full-width no-outline" tabindex="0">
+                                        {{ NetFeeAmount }}
                                       </div>
-                                    </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-6">
-                                      <q-field outlined stack-label>
-                                      <template v-slot:control>
-                                        <div class="self-center full-width no-outline" tabindex="0">
-                                          {{ formatCurrency2(TotalPayment) }}
-                                        </div>
-                                      </template>
-                                    </q-field>
+                                    </template>
+                                  </q-field>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <q-field outlined label="Tax Fee Amount" stack-label>
+                                    <template v-slot:control>
+                                      <div class="self-center full-width no-outline" tabindex="0">
+                                        {{ TaxFeeAmount }}
+                                      </div>
+                                    </template>
+                                  </q-field>
+                                  </div>
+                                </div>
+                                <br />
+                                <div class="row q-col-gutter-md">
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="q-gutter-md">
+                                      <q-btn
+                                        style="width: 140px"
+                                        color="primary"
+                                        label="Calculate"
+                                        :disable="SubscriptionAmount === 0"
+                                        @click="onCalculate"
+                                      >
+                                      </q-btn>
                                     </div>
                                   </div>
                                 </div>
-                              </q-tab-panel>
-                              <q-tab-panel name="two">
-                                <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
-                                  <q-card class="shadow-3">
-                                    <q-card-section>
-                                      <div
-                                        class="text-weight-bolder text-subtitle1 q-mb-sm"
-                                      >
-                                        Customer Bank Account
+                                <br />
+                                <div class="row q-col-gutter-md">
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <q-field outlined label="Total Fee Amount" stack-label>
+                                    <template v-slot:control>
+                                      <div class="self-center full-width no-outline" tabindex="0">
+                                        {{ formatCurrency2(TotalFeeAmount) }}
                                       </div>
-                                      <q-separator />
-                                      <div class="q-mb-md" />
-                                      <div class="row q-col-gutter-md">
-                                        <div
-                                          class="col-xs-12 col-sm-6 col-md-6"
-                                        >
-                                          <q-select
-                                            stack-label
-                                            outlined
-                                            v-model="Bank"
-                                            :options="optBank"
-                                            emit-value
-                                            map-options
-                                            :option-label="optBank =>optBank.dropdown_details_desc"
-                                            :option-value="optBank => optBank"
-                                            @input="FilterAccountBank(), ClearFilterAccountBank()"
-                                            label="Bank"
-                                          ></q-select>
-                                        </div>
+                                    </template>
+                                  </q-field>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <q-field outlined label="Total Subscription Amount" stack-label>
+                                    <template v-slot:control>
+                                      <div class="self-center full-width no-outline" tabindex="0">
+                                        {{ formatCurrency2(TotalSubscription) }}
+                                      </div>
+                                    </template>
+                                  </q-field>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div
+                                      class="float-right q-mt-md text-subtitle1 text-bold"
+                                    >
+                                      Total Payment Amount :
+                                    </div>
+                                  </div>
+                                  <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <q-field outlined stack-label>
+                                    <template v-slot:control>
+                                      <div class="self-center full-width no-outline" tabindex="0">
+                                        {{ formatCurrency2(TotalPayment) }}
+                                      </div>
+                                    </template>
+                                  </q-field>
+                                  </div>
+                                </div>
+                              </div>
+                            </q-tab-panel>
+                            <q-tab-panel name="two">
+                              <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
+                                <q-card class="shadow-3">
+                                  <q-card-section>
+                                    <div
+                                      class="text-weight-bolder text-subtitle1 q-mb-sm"
+                                    >
+                                      Customer Bank Account
+                                    </div>
+                                    <q-separator />
+                                    <div class="q-mb-md" />
+                                    <div class="row q-col-gutter-md">
+                                      <div
+                                        class="col-xs-12 col-sm-6 col-md-6"
+                                      >
+                                        <q-select
+                                          stack-label
+                                          outlined
+                                          v-model="Bank"
+                                          :options="optBank"
+                                          emit-value
+                                          map-options
+                                          :option-label="optBank =>optBank.dropdown_details_desc"
+                                          :option-value="optBank => optBank"
+                                          @input="FilterAccountBank(), ClearFilterAccountBank()"
+                                          label="Bank"
+                                        ></q-select>
+                                      </div>
 
+                                      <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <q-select
+                                          stack-label
+                                          outlined
+                                          v-model="BankAccountNo"
+                                          :options="optBankAccountNo"
+                                          emit-value
+                                          map-options
+                                          :option-label="
+                                            optBankAccountNo =>
+                                              optBankAccountNo.account_number
+                                          "
+                                          :option-value="
+                                            optBankAccountNo =>
+                                              optBankAccountNo
+                                          "
+                                          @input="resetValueBankAccoount"
+                                          label="Bank Account No"
+                                        ></q-select>
+                                      </div>
+                                      <div
+                                        class="col-xs-12 col-sm-4 col-md-4"
+                                      >
+                                        <q-field
+                                          outlined
+                                          label="Currency"
+                                          stack-label
+                                        >
+                                          <template v-slot:control>
+                                            <div
+                                              class="self-center full-width no-outline"
+                                              tabindex="0"
+                                            >
+                                              {{ CurrencyBank }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
+                                      <div
+                                        class="col-xs-12 col-sm-4 col-md-4"
+                                      >
+                                        <q-field
+                                          outlined
+                                          label="Account Type"
+                                          stack-label
+                                        >
+                                          <template v-slot:control>
+                                            <div
+                                              class="self-center full-width no-outline"
+                                              tabindex="0"
+                                            >
+                                              {{ AccountType }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
+                                      <div class="col-xs-12 col-sm-4 col-md-4">
+                                        <q-field outlined label="Branch Name" stack-label>
+                                          <template v-slot:control>
+                                            <div class="self-center full-width no-outline" tabindex="0">
+                                              {{ BranchName }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
+                                      <div class="col-xs-12 col-sm-12 col-md-12">
+                                        <q-input
+                                          outlined
+                                          v-model="RemarkBA"
+                                          stack-label
+                                          label="Remark"
+                                          type="textarea"
+                                          float-label="Textarea"
+                                          :max-height="100"
+                                          rows="5"
+                                        >
+                                        </q-input>
+                                      </div>
+                                    </div>
+                                  </q-card-section>
+                                </q-card>
+                              </div>
+                            </q-tab-panel>
+                            <q-tab-panel name="three">
+                              <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
+                                <q-card class="shadow-3">
+                                  <q-card-section>
+                                    <div
+                                      class="text-weight-bolder text-subtitle1 q-mb-sm"
+                                    >
+                                      Branch Info
+                                    </div>
+                                    <q-separator />
+                                    <div class="q-mb-md" />
+                                    <div class="row q-col-gutter-md">
+                                      <div
+                                        class="col-xs-12 col-sm-6 col-md-6"
+                                      >
+                                        <q-field
+                                          outlined
+                                          label="Transaction Branch"
+                                          stack-label
+                                        >
+                                          <template v-slot:control>
+                                            <div
+                                              class="self-center full-width no-outline"
+                                              tabindex="0"
+                                            >
+                                              {{ TrnBranch }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
+                                      <div
+                                        class="col-xs-12 col-sm-6 col-md-6"
+                                      >
+                                        <q-field
+                                          outlined
+                                          label="Sales Name"
+                                          stack-label
+                                        >
+                                          <template v-slot:control>
+                                            <div
+                                              class="self-center full-width no-outline"
+                                              tabindex="0"
+                                            >
+                                              {{ SalesName }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
+                                      <div
+                                        class="col-xs-12 col-sm-6 col-md-6"
+                                      >
+                                        <q-field
+                                          outlined
+                                          label="Customer Class"
+                                          stack-label
+                                        >
+                                          <template v-slot:control>
+                                            <div
+                                              class="self-center full-width no-outline"
+                                              tabindex="0"
+                                            >
+                                              {{ CustomerGroup }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
                                         <div class="col-xs-12 col-sm-6 col-md-6">
-                                          <q-select
-                                            stack-label
-                                            outlined
-                                            v-model="BankAccountNo"
-                                            :options="optBankAccountNo"
-                                            emit-value
-                                            map-options
-                                            :option-label="
-                                              optBankAccountNo =>
-                                                optBankAccountNo.account_number
-                                            "
-                                            :option-value="
-                                              optBankAccountNo =>
-                                                optBankAccountNo
-                                            "
-                                            @input="resetValueBankAccoount"
-                                            label="Bank Account No"
-                                          ></q-select>
-                                        </div>
-                                        <div
-                                          class="col-xs-12 col-sm-4 col-md-4"
-                                        >
-                                          <q-field
-                                            outlined
-                                            label="Currency"
-                                            stack-label
-                                          >
-                                            <template v-slot:control>
-                                              <div
-                                                class="self-center full-width no-outline"
-                                                tabindex="0"
-                                              >
-                                                {{ CurrencyBank }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div
-                                          class="col-xs-12 col-sm-4 col-md-4"
-                                        >
-                                          <q-field
-                                            outlined
-                                            label="Account Type"
-                                            stack-label
-                                          >
-                                            <template v-slot:control>
-                                              <div
-                                                class="self-center full-width no-outline"
-                                                tabindex="0"
-                                              >
-                                                {{ AccountType }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                          <q-field outlined label="Branch Name" stack-label>
-                                            <template v-slot:control>
-                                              <div class="self-center full-width no-outline" tabindex="0">
-                                                {{ BranchName }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-12 col-md-12">
-                                          <q-input
-                                            outlined
-                                            v-model="RemarkBA"
-                                            stack-label
-                                            label="Remark"
-                                            type="textarea"
-                                            float-label="Textarea"
-                                            :max-height="100"
-                                            rows="5"
-                                          >
-                                          </q-input>
-                                        </div>
+                                        <q-input stack-label outlined v-model="RefferenceNo" label="Reference No" />
                                       </div>
-                                    </q-card-section>
-                                  </q-card>
-                                </div>
-                              </q-tab-panel>
-                              <q-tab-panel name="three">
-                                <div class="q-pl-xs q-pr-xs q-pt-sm q-pb-sm">
-                                  <q-card class="shadow-3">
-                                    <q-card-section>
-                                      <div
-                                        class="text-weight-bolder text-subtitle1 q-mb-sm"
-                                      >
-                                        Branch Info
+                                      <div class="col-xs-12 col-sm-4 col-md-4">
+                                        <q-field outlined label="Character Of Mutual Funds" stack-label>
+                                          <template v-slot:control>
+                                            <div class="self-center full-width no-outline" tabindex="0">
+                                              {{ CharacterOfMutualFunds }}
+                                            </div>
+                                          </template>
+                                        </q-field>
                                       </div>
-                                      <q-separator />
-                                      <div class="q-mb-md" />
-                                      <div class="row q-col-gutter-md">
-                                        <div
-                                          class="col-xs-12 col-sm-6 col-md-6"
-                                        >
-                                          <q-field
-                                            outlined
-                                            label="Transaction Branch"
-                                            stack-label
-                                          >
-                                            <template v-slot:control>
-                                              <div
-                                                class="self-center full-width no-outline"
-                                                tabindex="0"
-                                              >
-                                                {{ TrnBranch }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div
-                                          class="col-xs-12 col-sm-6 col-md-6"
-                                        >
-                                          <q-field
-                                            outlined
-                                            label="Sales Name"
-                                            stack-label
-                                          >
-                                            <template v-slot:control>
-                                              <div
-                                                class="self-center full-width no-outline"
-                                                tabindex="0"
-                                              >
-                                                {{ SalesName }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div
-                                          class="col-xs-12 col-sm-6 col-md-6"
-                                        >
-                                          <q-field
-                                            outlined
-                                            label="Customer Group"
-                                            stack-label
-                                          >
-                                            <template v-slot:control>
-                                              <div
-                                                class="self-center full-width no-outline"
-                                                tabindex="0"
-                                              >
-                                                {{ CustomerGroup }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                         <div class="col-xs-12 col-sm-6 col-md-6">
-                                          <q-input stack-label outlined v-model="RefferenceNo" label="Reference No" />
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                          <q-field outlined label="Character Of Mutual Funds" stack-label>
-                                            <template v-slot:control>
-                                              <div class="self-center full-width no-outline" tabindex="0">
-                                                {{ CharacterOfMutualFunds }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                          <q-field outlined label="Method Of Sales" stack-label>
-                                            <template v-slot:control>
-                                              <div class="self-center full-width no-outline" tabindex="0">
-                                                {{ MethodOfSales }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div class="col-xs-12 col-sm-4 col-md-4">
-                                          <q-field outlined label="Distribution Of Sales" stack-label>
-                                            <template v-slot:control>
-                                              <div class="self-center full-width no-outline" tabindex="0">
-                                                {{ DistributionOfSales }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
+                                      <div class="col-xs-12 col-sm-4 col-md-4">
+                                        <q-field outlined label="Method Of Sales" stack-label>
+                                          <template v-slot:control>
+                                            <div class="self-center full-width no-outline" tabindex="0">
+                                              {{ MethodOfSales }}
+                                            </div>
+                                          </template>
+                                        </q-field>
                                       </div>
-                                    </q-card-section>
-                                  </q-card>
+                                      <div class="col-xs-12 col-sm-4 col-md-4">
+                                        <q-field outlined label="Distribution Of Sales" stack-label>
+                                          <template v-slot:control>
+                                            <div class="self-center full-width no-outline" tabindex="0">
+                                              {{ DistributionOfSales }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
+                                    </div>
+                                  </q-card-section>
+                                </q-card>
 
-                                  <q-card class="q-mt-lg shadow-3">
-                                    <q-card-section>
-                                      <div
-                                        class="text-weight-bolder text-subtitle1 q-mb-sm"
-                                      >
-                                        Date Info
-                                      </div>
-                                      <q-separator />
-                                      <div class="q-mb-md" />
-                                      <div class="row q-col-gutter-md">
-                                        <div class="col-xs-12 col-sm-6 col-md-6">
-                                          <q-field
-                                            outlined
-                                            label="Transaction Date"
-                                            stack-label
-                                          >
-                                            <template v-slot:append>
-                                              <q-icon name="event" />
-                                            </template>
-                                            <template v-slot:control>
-                                              <div
-                                                class="self-center full-width no-outline"
-                                                tabindex="0"
-                                              >
-                                                {{ TrnDate }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
-                                        <div
-                                          class="col-xs-12 col-sm-6 col-md-6"
+                                <q-card class="q-mt-lg shadow-3">
+                                  <q-card-section>
+                                    <div
+                                      class="text-weight-bolder text-subtitle1 q-mb-sm"
+                                    >
+                                      Date Info
+                                    </div>
+                                    <q-separator />
+                                    <div class="q-mb-md" />
+                                    <div class="row q-col-gutter-md">
+                                      <div class="col-xs-12 col-sm-6 col-md-6">
+                                        <q-field
+                                          outlined
+                                          label="Transaction Date"
+                                          stack-label
                                         >
-                                          <q-field
-                                            outlined
-                                            label="Posting Date"
-                                            stack-label
-                                          >
-                                            <template v-slot:append>
-                                              <q-icon name="event" />
-                                            </template>
-                                            <template v-slot:control>
-                                              <div
-                                                class="self-center full-width no-outline"
-                                                tabindex="0"
-                                              >
-                                                {{ PostingDate }}
-                                              </div>
-                                            </template>
-                                          </q-field>
-                                        </div>
+                                          <template v-slot:append>
+                                            <q-icon name="event" />
+                                          </template>
+                                          <template v-slot:control>
+                                            <div
+                                              class="self-center full-width no-outline"
+                                              tabindex="0"
+                                            >
+                                              {{ TrnDate }}
+                                            </div>
+                                          </template>
+                                        </q-field>
                                       </div>
-                                    </q-card-section>
-                                  </q-card>
-                                </div>
-                              </q-tab-panel>
-                            </q-tab-panels>
-                          </q-card-section>
-                        </q-card>
-                      </transition>
-                    </q-card-section>
-                  </form>
-                </q-card-section>
-              </q-card>
-            </transition>
-          </q-card-section>
-        </q-card>
-        <q-page-scroller
-          position="bottom-right"
-          :scroll-offset="150"
-          :offset="[30, 25]"
-        >
-          <q-btn fab icon="keyboard_arrow_up" color="negative" />
-        </q-page-scroller>
-      </q-page>
-    </div>
+                                      <div
+                                        class="col-xs-12 col-sm-6 col-md-6"
+                                      >
+                                        <q-field
+                                          outlined
+                                          label="Posting Date"
+                                          stack-label
+                                        >
+                                          <template v-slot:append>
+                                            <q-icon name="event" />
+                                          </template>
+                                          <template v-slot:control>
+                                            <div
+                                              class="self-center full-width no-outline"
+                                              tabindex="0"
+                                            >
+                                              {{ PostingDate }}
+                                            </div>
+                                          </template>
+                                        </q-field>
+                                      </div>
+                                    </div>
+                                  </q-card-section>
+                                </q-card>
+                              </div>
+                            </q-tab-panel>
+                          </q-tab-panels>
+                        </q-card-section>
+                      </q-card>
+                    </transition>
+                  </q-card-section>
+                </form>
+              </q-card-section>
+            </q-card>
+          </transition>
+        </q-card-section>
+      </q-card>
+    </q-page>
   </div>
 </template>
 
@@ -580,7 +571,7 @@ import { FilterBank } from 'src/graphql/Customer/CustomerBank'
 import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
-  name: 'AddProduct',
+  name: 'Subscription',
   props: ['Muser'],
   data() {
     return {
@@ -786,6 +777,7 @@ export default {
               total_fee_amount: this.TotalFeeAmount,
               total_subscription_amount: this.TotalSubscription,
               total_payment_amount: this.TotalPayment,
+              balance_amount: this.TotalSubscription,
 
               created_date: this.now,
               created_by: this.user

@@ -682,9 +682,30 @@ export default {
       // console.log('Clicked on an Item')
     },
     ClearButton() {
-      this.AreaName = ''
-      this.AreaCode = ''
-
+      this.ProductCode = ''
+      this.Description = ''
+      this.ProductCategory = ''
+      this.ProductType = ''
+      this.FundManager = ''
+      this.CharacterOfMutualFunds = ''
+      this.MethodOfSales = ''
+      this.DistributionOfSales = ''
+      this.BankAccountNo = ''
+      this.BeneficiaryName = ''
+      this.CustodyBank.dropdown_details_desc = ''                                       
+      this.BranchName.branch_name = ''                                       
+      this.Currency.currencies_desc = ''                                       
+      this.AccountType.dropdown_details_desc = ''                                      
+      this.Classification.profile_name_desc = ''                                       
+      this.Remark = ''                                       
+      this.SettlementPeriod.dropdown_details_desc = ''                                       
+      this.DevidendReinvested.dropdown_details_desc = ''                                       
+      this.AccountName = ''                                       
+      this.AccountNumber = ''                                       
+      this.Tax = ''
+      this.TaxRate = 0
+      this.SubscriptionFee = 0
+      this.RedemptionFee = 0
       setTimeout(() => {
         // delay simulated, we are done,
         // now restoring submit to its initial state
@@ -751,7 +772,7 @@ export default {
         })
         .onOk(() => {
           console.log('>>>> OK')
-          this.$router.push({ path: '/area' })
+          this.$router.push({ path: '/masterproduct.' })
         })
 
         .onCancel(() => {

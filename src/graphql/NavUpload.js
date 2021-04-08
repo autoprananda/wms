@@ -61,3 +61,11 @@ export const EditNav = gql`
     }
   }
 `
+export const GetLastNav = gql`
+query wms_nav($code: String){
+  wms_nav(where: {product_name: {_eq: $code}}, order_by: {nav_date: desc}) {
+    nav_date
+    nav_amount
+  }
+}
+`

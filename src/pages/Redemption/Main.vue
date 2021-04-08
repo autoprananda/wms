@@ -5,7 +5,7 @@
         <q-card-section>
           <q-breadcrumbs>
             <q-breadcrumbs-el label="Home" icon="home" to="/dashboard" />
-            <q-breadcrumbs-el label="Dropdown" icon="settings" />
+            <q-breadcrumbs-el label="Redemption" icon="fas fa-hand-holding-usd" />
           </q-breadcrumbs>
         </q-card-section>
         <q-separator inset />
@@ -13,66 +13,22 @@
         <transition appear enter-active-class="animated zoomIn">
           <q-card-section>
             <form>
-              <div class="row">
-                <div class="q-ml-md q-mb-sm q-mr-md q-gutter-sm">
-                  <q-btn
-                    style="width: 80px"
-                    @click="onRefresh"
-                    color="grey-9"
-                    icon="ion-refresh"
-                    v-ripple
-                  >
-                    <q-tooltip>Refresh</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    @click="onAdd"
-                    color="primary"
-                    icon="ion-add"
-                    v-ripple
-                  >
-                    <q-tooltip>Add</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    @click="onView"
-                    :disable="selected.length === 0"
-                    color="cyan-7"
-                    icon="far fa-eye"
-                    v-ripple
-                  >
-                    <q-tooltip>View</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    @click="onUpdate"
-                    :disable="selected.length === 0"
-                    color="accent"
-                    icon="fas fa-pencil-alt"
-                    v-ripple
-                  >
-                    <q-tooltip>Edit</q-tooltip>
-                  </q-btn>
-                  <q-btn
-                    style="width: 80px"
-                    color="negative"
-                    @click="deleteDialog"
-                    :disable="selected.length === 0"
-                    icon="eva-trash-2"
-                    v-ripple
-                  >
-                    <q-tooltip>Delete</q-tooltip>
-                  </q-btn>
+              <q-card-section>
+                <div class="q-gutter-md">
+                  <q-btn color="primary" label="Redemption" @click="onRedemption"
+                    :disable="selected.length === 0" />
+                  <q-btn color="accent" label="View Redemption" @click="onView"
+                    :disable="selected.length === 0" />
                 </div>
-              </div>
+              </q-card-section>
               <q-card-section>
                 <q-table
                   class="q-ml-sm q-mr-sm table-label-color"
-                  title="Dropdown List"
+                  title="Customer List"
                   :grid="$q.screen.xs"
                   :data="loaddata"
                   :columns="columns"
-                  row-key="id_dropdown"
+                  row-key="gcif_number"
                   selection="single"
                   :selected.sync="selected"
                   separator="cell"
@@ -103,12 +59,14 @@
                         <q-checkbox dense v-model="props.selected"></q-checkbox>
                       </q-td>
                       <q-td
-                        key="dropdown_code"
+                        key="gcif_number"
                         :props="props"
                         class="cursor-pointer"
                         @click.native="onViewclick(props.row)"
-                      >{{ props.row.dropdown_code }}</q-td>
-                      <q-td key="dropdown_desc" :props="props">{{ props.row.dropdown_desc }}</q-td>
+                      >{{ props.row.gcif_number }}</q-td>
+                      <q-td key="fullname" :props="props">{{ props.row.fullname }}</q-td>
+                       <q-td key="sales_name" :props="props">{{ props.row.sales_name }}</q-td>
+                        <q-td key="branch.branch_name" :props="props">{{ props.row.branch.branch_name }}</q-td>
                      <q-td key="WMS_Info" style="width: 1px">
                         <div class="center">
                           <q-icon color="grey" name="fas fa-info-circle" size="25px">
@@ -171,12 +129,9 @@
 </template>
 
 <script>
-import {
-  ViewDropDownList,
-  DeleteDropDownList
-} from 'src/graphql/MasterDropDownList'
+import { getDataCustomer, DeleteCustomer } from 'src/graphql/Customer/Customer'
 export default {
-  name: 'MainDropdown',
+  name: 'MainCustomer',
   data() {
     return {
       loaddata: [],
@@ -188,28 +143,43 @@ export default {
       },
       columns: [
         {
-          name: 'dropdown_code',
-          label: 'List Code',
-          field: row => row.dropdown_code,
+          name: 'gcif_number',
+          label: 'GCIF Number',
+          field: row => row.gcif_number,
           format: val => `${val}`,
           align: 'Left',
           sortable: true
         },
         {
-          name: 'dropdown_desc',
-          label: 'List Name',
-          field: row => row.dropdown_desc,
-          format: val => `${val}`,
+          name: 'fullname',
+          label: 'Full Name',
           align: 'Left',
-          sortable: true
+          field: row => row.fullname
+        },
+        {
+          name: 'sales_name',
+          label: 'Sales Name',
+          align: 'Left',
+          field: row => row.sales_name
+        },
+        {
+          name: 'branch.branch_name',
+          label: 'Branch Name',
+          align: 'Left',
+          field: row => row.branch.branch_name
+        },
+        {
+          name: 'WMS_Info',
+          field: 'WMS_Info',
+          align: 'Left'
         }
-      ]
+      ],
     }
   },
-   apollo: {
+  apollo: {
     loaddata: {
-      query: ViewDropDownList,
-      update: data => data.wms_dropdown_lists
+      query: getDataCustomer,
+      update: data => data.wms_customer
     }
   },
   mounted() {
@@ -236,27 +206,28 @@ export default {
 
       this.selected = []
     },
-    onAdd() {
-      this.$router.push({ path: '/masterdropdownlist/add' })
+    onRedemption() {
+      localStorage.setItem('selectedData', JSON.stringify(this.selected))
+      this.$router.push({ path: '/redemption/add' })
     },
     onUpdate() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected))
-      this.$router.push({ path: '/masterdropdownlist/edit' })
-    },
-    onViewclick(dataclick) {
-      localStorage.setItem('selectedData', JSON.stringify(dataclick))
-      this.$router.push({ path: '/masterdropdownlist/view' })
+      this.$router.push({ path: '/redemption/edit' })
     },
     onView() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected[0]))
-      this.$router.push({ path: '/masterdropdownlist/view' })
+      this.$router.push({ path: '/redemption/viewlist' })
+    },
+    onViewclick(dataclick) {
+      localStorage.setItem('selectedData', JSON.stringify(dataclick))
+      this.$router.push({ path: '/redemption/viewlist' })
     },
     onDelete() {
       setTimeout(() => {
         this.$apollo.mutate({
-          mutation: DeleteDropDownList,
+          mutation: DeleteCustomer,
           variables: {
-            code: this.selected[0].id_dropdown
+            code: this.selected[0].gcif_number
           }
         })
         this.submitting = false
