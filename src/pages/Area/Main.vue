@@ -17,10 +17,10 @@
                 <div class="q-ml-md q-mb-sm q-mr-md q-gutter-sm">
                   <q-btn
                     style="width: 80px"
-                    @click="onRefresh"
                     color="grey-9"
                     icon="ion-refresh"
                     v-ripple
+                    @click="getData"
                   >
                     <q-tooltip>Refresh</q-tooltip>
                   </q-btn>
@@ -65,12 +65,13 @@
                   </q-btn>
                 </div>
               </div>
+              <!-- {{dataArea.length}} -->
               <q-card-section>
                 <q-table
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Area List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="loadData"
                   :columns="columns"
                   row-key="id_area"
                   selection="single"
@@ -171,12 +172,13 @@
 </template>
 
 <script>
-import { ViewArea, DeleteArea } from 'src/graphql/Area'
+// import { mapState, mapActions } from 'vuex'
+import { DeleteArea } from 'src/graphql/Area'
 export default {
   name: 'MainArea',
   data() {
     return {
-      loaddata: [],
+      loadData: [],
       selected: [],
       loading: false,
       filter: null,
@@ -206,19 +208,25 @@ export default {
       ],
     }
   },
-  apollo: {
-    loaddata: {
-      query: ViewArea,
-      update: data => data.wms_area
-    }
+  computed: {
+    // ...mapState('showcase', ['dataArea'])
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.$q.loading.show()
+    this.getData()
+    // this.getDataArea()
   },
 
   methods: {
+    // ...mapActions('showcase', ['getDataArea']),
+    getData() {
+      this.$store.dispatch('showcase/loadDataArea').then(response => {
+        console.log(response, 'RESPON')
+        this.loadData = response
+        this.$q.loading.hide()
+      })
+    },
     getTime(file) {
       if (file !== undefined && file !== null) {
         let date = file.split('T')
@@ -266,7 +274,7 @@ export default {
           icon: 'fas fa-exclamation-circle',
           message: 'The Data Has Been Removed'
         })
-        this.onRefresh()
+        this.getData()
       })
     },
     deleteDialog() {

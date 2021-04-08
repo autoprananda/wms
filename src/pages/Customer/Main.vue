@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Customer List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataCustomer"
                   :columns="columns"
                   row-key="gcif_number"
                   selection="single"
@@ -173,7 +173,8 @@
 </template>
 
 <script>
-import { getDataCustomer, DeleteCustomer } from 'src/graphql/Customer/Customer'
+import { mapActions, mapState } from 'vuex'
+import { DeleteCustomer } from 'src/graphql/Customer/Customer'
 export default {
   name: 'MainCustomer',
   data() {
@@ -221,18 +222,30 @@ export default {
     }
   },
   apollo: {
-    loaddata: {
-      query: getDataCustomer,
-      update: data => data.wms_customer
-    }
+    // loaddata: {
+    //   query: getDataCustomer,
+    //   update: data => data.wms_customer
+    // }
+  },
+  computed: {
+    ...mapState('showcase', ['dataCustomer'])
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.loadDataCustomer()
+    this.showLoading()
   },
-
+  
   methods: {
+    ...mapActions('showcase', ['loadDataCustomer']),
+    showLoading() {
+      this.$q.loading.show()
+      setTimeout(() => {
+        if (this.dataCustomer.length !== 0) {
+          this.$q.loading.hide()
+        }
+      }, 2000)
+    },
     getTime(file) {
       if (file !== undefined && file !== null) {
         let date = file.split('T')
@@ -244,6 +257,7 @@ export default {
       this.loading = true
       setTimeout(() => {
         this.$apollo.queries.loaddata.refetch()
+        console.log(this.loaddata, 'DATA WASEL')
         this.$q.loading.hide()
         this.loading = false
       }, 1000)
