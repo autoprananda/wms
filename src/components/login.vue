@@ -86,6 +86,8 @@
 
 let init = ''
 
+import bcryptjs from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 import { GetUser } from 'src/graphql/MasterUser'
 import { mapState } from 'vuex'
 import { date } from 'quasar'
@@ -128,8 +130,13 @@ export default {
         code: this.username
       }).then(response => {
         if (response.data.wms_m_user.length !== 0) {
-          this.decodedBase64(response.data.wms_m_user[0].password)
-          if (this.passwordOri === this.password) {
+          let passwordCheck = bcryptjs.compareSync(this.password, response.data.wms_m_user[0].password)
+          if (passwordCheck) {
+            let token = jwt.sign({
+              id: response.data.wms_m_user[0].id,
+              username: response.data.wms_m_user[0].username
+            }, 'SECRET')
+            console.log(token, 'token');
             this.$q.sessionStorage.set('username', response.data.wms_m_user[0].username)
             this.$q.notify({
               color: 'accent',
@@ -137,7 +144,7 @@ export default {
               icon: 'fas fa-check-circle',
               message: 'Welcome, ' + response.data.wms_m_user[0].fullname
             })
-            this.$router.push({ path: '/dashboard' })
+            // this.$router.push({ path: '/dashboard' })
           } else {
             this.wrongEmailorPassword()
           }

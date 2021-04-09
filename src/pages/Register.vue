@@ -77,9 +77,10 @@
 </template>
 
 <script>
+import bcryptjs from 'bcryptjs'
 import { Register } from 'src/graphql/MasterUser'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
+const saltRounds = 10
 export default {
   name: 'Register',
   data() {
@@ -97,64 +98,79 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      loginUrl: 'loginUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   },
   methods: {
     trim() {
       this.username = this.username.replace(/ /g,'')
     },
-    encodedToBase64(value) {
-      this.passwordLast = btoa(value)
+    encrypt(value) {
+      
     },
     Register() {
       if (this.password !== this.confirmPassword) {
-      this.$q.notify({
-              color: 'negative',
-              timeout: 300,
-              textColor: 'white',
-              icon: 'fas fa-exclamation-circle',
-              message: 'Password did not match'
-            })
+        this.$q.notify({
+          color: 'negative',
+          timeout: 300,
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'Password did not match'
+        })
       } else {
         this.register = true
-        this.encodedToBase64(this.password)
-        this.$apollo
-          .mutate({
-            mutation: Register,
-            variables: {
-              objects: {
-                username: this.username,
-                password: this.passwordLast,
-                fullname: this.fullname
+        bcryptjs.genSalt(saltRounds, (err, salt) => {
+          if (err) {
+            return next(err)
+          } else {
+            bcryptjs.hash(this.password, salt, (err, hash) => {
+              if (err) {
+                return next(err)
+              } else {
+                this.passwordLast = hash
+                
+                this.$apollo
+                  .mutate({
+                    mutation: Register,
+                    variables: {
+                      objects: {
+                        username: this.username,
+                        password: this.passwordLast,
+                        fullname: this.fullname
+                      }
+                    }
+                  })
+                  .then(response => {
+                    this.register = false
+                    this.$q.notify({
+                      color: 'accent',
+                      textColor: 'white',
+                      icon: 'fas fa-check-circle',
+                      message: 'Username ' + this.username + ' ' + 'Has Been Register'
+                    })
+                    this.$router.push({
+                      path: '/'
+                    })
+                  })
+                  .catch(err => {
+                    this.register = false
+                    this.emessage = err
+                    this.$q.notify({
+                      color: 'negative',
+                      textColor: 'white',
+                      icon: 'fas fa-exclamation-circle',
+                      message: 'Username ' + this.username + ' already exist'
+                    })
+                  })
               }
-            }
-          })
-          .then(response => {
-            this.register = false
-            this.$q.notify({
-              color: 'accent',
-              textColor: 'white',
-              icon: 'fas fa-check-circle',
-              message: 'Username ' + this.username + ' ' + 'Has Been Register'
             })
-            this.$router.push({ path: '/' })
-          })
-          .catch(err => {
-            this.register = false
-            this.emessage = err
-            this.$q.notify({
-              color: 'negative',
-              textColor: 'white',
-              icon: 'fas fa-exclamation-circle',
-              message: 'Username '+ this.username + ' already exist'
-            })
-          })
-        }
+          }
+        })
+      }
     },
+    
+    // encodedToBase64(value) {
+    //   this.passwordLast = btoa(value)
+    // },
     Login() {
       this.$router.push({ path: '/' })
     }
