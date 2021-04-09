@@ -64,10 +64,21 @@ const link = split(
   authMiddleware.concat(httpLink)
 )
 
+const defaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+}
 // Create the apollo client
 export const apolloClient = new ApolloClient({
-  link,
+  link: link,
   cache: new InMemoryCache(),
+  defaultOptions: defaultOptions,
   connectToDevTools: true
 })
 

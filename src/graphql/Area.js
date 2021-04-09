@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 // untuk insert table
-export const InsertArea = gql`
+export const insertArea = gql`
   mutation insert_wms_area(
     $objects: [wms_area_insert_input!]!
   ) {
@@ -12,22 +12,22 @@ export const InsertArea = gql`
 `
 
 // View:  get all field from master_client
-export const ViewArea = gql`
+export const viewArea = gql`
   query wms_area {
-    wms_area {
-    id_area
-    area_code
-    area_name
-    created_by
-    created_date
-    modified_by
-    modified_date
+    wms_area (order_by: {created_date: desc}) {
+      id_area
+      area_code
+      area_name
+      created_by
+      created_date
+      modified_by
+      modified_date
     }
   }
 `
 
 // delete
-export const DeleteArea = gql`
+export const deleteArea = gql`
   mutation delete_wms_area($code: Int!) {
     delete_wms_area(where: { id_area: { _eq: $code } }) {
       affected_rows
@@ -35,7 +35,7 @@ export const DeleteArea = gql`
   }
 `
 // edit
-export const EditArea = gql`
+export const editArea = gql`
   mutation update_wms_area(
     $code: Int!
     $changes: wms_area_set_input

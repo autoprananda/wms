@@ -141,7 +141,7 @@
 
 <script>
 import { EditBranch } from 'src/graphql/MasterBranch'
-import { ViewArea } from 'src/graphql/Area'
+import { viewArea } from 'src/graphql/Area'
 import { GetRegion } from 'src/graphql/Region'
 import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
 import { mapState } from 'vuex'
@@ -168,7 +168,7 @@ export default {
   },
   apollo: {
     loadArea: {
-      query: ViewArea,
+      query: viewArea,
       update: data => data.wms_area
     },
     loadRegion: {

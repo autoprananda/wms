@@ -98,7 +98,7 @@
 <script>
 import { InsBranch } from 'src/graphql/MasterBranch'
 import { GetRegion } from 'src/graphql/Region'
-import { ViewArea } from 'src/graphql/Area'
+import { viewArea } from 'src/graphql/Area'
 import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
 import { mapState } from 'vuex'
 import { date } from 'quasar'
@@ -122,7 +122,7 @@ export default {
   },
   apollo: {
     loadArea: {
-      query: ViewArea,
+      query: viewArea,
       update: data => data.wms_area
     },
     loadRegion: {

@@ -20,7 +20,7 @@
                     color="grey-9"
                     icon="ion-refresh"
                     v-ripple
-                    @click="getData"
+                    @click="onRefresh"
                   >
                     <q-tooltip>Refresh</q-tooltip>
                   </q-btn>
@@ -71,7 +71,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Area List"
                   :grid="$q.screen.xs"
-                  :data="loadData"
+                  :data="dataArea"
                   :columns="columns"
                   row-key="id_area"
                   selection="single"
@@ -172,13 +172,11 @@
 </template>
 
 <script>
-// import { mapState, mapActions } from 'vuex'
-import { DeleteArea } from 'src/graphql/Area'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainArea',
   data() {
     return {
-      loadData: [],
       selected: [],
       loading: false,
       filter: null,
@@ -209,23 +207,39 @@ export default {
     }
   },
   computed: {
-    // ...mapState('showcase', ['dataArea'])
+    ...mapState('showcase', ['dataArea']),
   },
   mounted() {
     localStorage.removeItem('selectedData')
-    this.$q.loading.show()
-    this.getData()
-    // this.getDataArea()
+    this.fetchDataArea()
+    this.loadingShow()
   },
 
   methods: {
-    // ...mapActions('showcase', ['getDataArea']),
-    getData() {
-      this.$store.dispatch('showcase/loadDataArea').then(response => {
-        console.log(response, 'RESPON')
-        this.loadData = response
-        this.$q.loading.hide()
-      })
+    ...mapActions('showcase', ['fetchDataArea', 'deleteDataArea']),
+    loadingShow() {
+      this.$q.loading.show()
+      this.loading = true
+      setTimeout(() => {
+        if (this.dataArea.length !== 0) {
+          this.$q.loading.hide()
+          this.loading = false
+        } else {
+          this.$q.loading.hide()
+          this.loading = false
+          this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Empty'
+        })
+        }
+      }, 2000);
+    },
+    onRefresh() {
+      this.fetchDataArea()
+      this.loadingShow()
     },
     getTime(file) {
       if (file !== undefined && file !== null) {
@@ -233,16 +247,6 @@ export default {
         date = date.join(' ')
         return date
       }
-    },
-    onRefresh() {
-      this.loading = true
-      setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
-        this.loading = false
-      }, 1000)
-
-      this.selected = []
     },
     onAdd() {
       this.$router.push({ path: '/area/add' })
@@ -260,22 +264,20 @@ export default {
       this.$router.push({ path: '/area/view' })
     },
     onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataArea(this.selected[0].id_area)
       setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DeleteArea,
-          variables: {
-            code: this.selected[0].id_area
-          }
-        })
-        this.submitting = false
+        this.$q.loading.hide()
+        this.loading = false
         this.$q.notify({
+          timeout: 300,
           color: 'negative',
           textColor: 'white',
           icon: 'fas fa-exclamation-circle',
           message: 'The Data Has Been Removed'
         })
-        this.getData()
-      })
+      }, 2000)
     },
     deleteDialog() {
       this.$q

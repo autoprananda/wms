@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { EditArea } from 'src/graphql/Area'
+import { editArea } from 'src/graphql/Area'
 import { date } from 'quasar'
 import { mapState } from 'vuex'
 export default {

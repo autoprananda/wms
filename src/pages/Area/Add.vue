@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import { InsertArea } from 'src/graphql/Area'
+import { insertArea } from 'src/graphql/Area'
 import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
@@ -84,7 +84,7 @@ export default {
       this.submitting = true
       this.$apollo
         .mutate({
-          mutation: InsertArea,
+          mutation: insertArea,
           variables: {
             objects: {
               area_code: this.AreaCode,
