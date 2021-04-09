@@ -437,7 +437,6 @@
 <script>
 export default {
   name: 'ViewSubscription',
-  props: ['Muser'],
   data() {
     return {
       

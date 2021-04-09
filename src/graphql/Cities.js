@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 // get all field from WMS_Corporate_Message
 export const GetAllMasterCities = gql`
   query wms_cities {
-    wms_cities {
+    wms_cities (order_by: {created_date: desc}) {
       city_name
       created_by
       created_date

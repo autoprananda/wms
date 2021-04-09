@@ -469,13 +469,10 @@ import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
 import { GetBranch } from 'src/graphql/MasterBranch'
 import { GetMasterCurrency } from 'src/graphql/Currency'
 import { date } from 'quasar'
-import { mapState } from 'vuex'
 export default {
-  name: 'EditProductCode',
-  props: ['Muser'],
+  name: 'EditProduct',
   data() {
     return {
-      userdata: this.Muser,
       carousel: false,
       submitting: false,
       user: this.$q.sessionStorage.getItem('username'),
@@ -779,10 +776,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      baseUrl: 'baseUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

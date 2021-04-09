@@ -145,7 +145,6 @@ export default {
         })
         .then(response => {
           this.data = response.data.wms_m_user
-          console.log(this.data, 'Data User')
         })
     },
     LogoutDialog() {
@@ -184,7 +183,7 @@ export default {
         this.$q.notify({
           color: 'negative',
           textColor: 'white',
-          icon: 'fas fa-check-circle',
+          icon: 'fas fa-exclamation-circle',
           message: 'You Have Been Logout'
         })
         this.$router.replace('/')

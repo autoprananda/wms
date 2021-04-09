@@ -398,7 +398,6 @@
 <script>
 export default {
   name: 'Redemption',
-  props: ['Muser'],
   data() {
     return {
       selectedview: JSON.parse(localStorage.selectedDataSubs),

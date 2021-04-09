@@ -783,18 +783,15 @@ import { GetMasterCountries } from 'src/graphql/Countries'
 import { GetBranch } from 'src/graphql/MasterBranch'
 import { GetMasterCurrency } from 'src/graphql/Currency'
 import { InsertCustomer, GetGenerateCIF } from 'src/graphql/Customer/Customer'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
-  name: 'AddProduct',
-  props: ['Muser'],
+  name: 'AddCustomer',
   data() {
     return {
       submitting: false,
       user: this.$q.sessionStorage.getItem('username'),
       tab: 'one',
       loading: false,
-      // tab one
       
       GlobalCifNumberMaster: [],
       GlobalCifNumberNext: [],
@@ -1384,9 +1381,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
     now2() {
       let timeStamp = Date.now()

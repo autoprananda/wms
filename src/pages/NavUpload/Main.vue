@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Nav List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataNavUpload"
                   :columns="columns"
                   row-key="id"
                   selection="single"
@@ -171,7 +171,8 @@
 </template>
 
 <script>
-import { ViewNav, DeleteNav } from 'src/graphql/NavUpload'
+
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainNavUpload',
   data() {
@@ -206,16 +207,13 @@ export default {
       ],
     }
   },
-  apollo: {
-    loaddata: {
-      query: ViewNav,
-      update: data => data.wms_nav
-    }
+    computed: {
+    ...mapState('showcase', ['dataNavUpload']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataNavUpload()
+    this.loadingShow()
   },
 
   methods: {
@@ -226,15 +224,52 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataNavUpload', 'deleteDataNavUpload']),
+    loadingShow() {
+        if (this.dataNavUpload.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataNavUpload.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataNavUpload()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
+    },
+    onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataNavUpload(this.selected[0].id)
+      setTimeout(() => {
+        this.$q.loading.hide()
+        this.loading = false
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Has Been Removed'
+        })
+      }, 2000)
     },
     onAdd() {
       this.$router.push({ path: '/navupload/add' })
@@ -250,24 +285,6 @@ export default {
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
       this.$router.push({ path: '/navupload/view' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DeleteNav,
-          variables: {
-            code: this.selected[0].id
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

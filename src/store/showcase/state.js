@@ -1,6 +1,16 @@
 export default function () {
   return {
+    dataArea: [],
+    dataBranch: [],
+    dataCity: [],
+    dataCountry: [],
+    dataCurrency: [],
     dataCustomer: [],
-    dataArea: []
+    dataDropDown: [],
+    dataMenu: [],
+    dataProduct: [],
+    dataSubMenu: [],
+    dataNavUpload: [],
+    dataRegion: []
   }
 }

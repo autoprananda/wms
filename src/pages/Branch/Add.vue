@@ -100,11 +100,9 @@ import { InsBranch } from 'src/graphql/MasterBranch'
 import { GetRegion } from 'src/graphql/Region'
 import { viewArea } from 'src/graphql/Area'
 import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'AddBranches',
-  props: ['Muser'],
   data() {
     return {
       userdata: this.Muser,
@@ -117,7 +115,8 @@ export default {
       Area: '',
       loadArea: [],
       loadRegion: [],
-      loadStatus: []
+      loadStatus: [],      
+      user: this.$q.sessionStorage.getItem('username'),
     }
   },
   apollo: {
@@ -152,7 +151,7 @@ export default {
               id_status: this.Status.id_dropdownlist_detail,
               id_area: this.Area.id_area,
               id_region: this.Region.id_region,
-              created_by: 'auto_prananda',
+              created_by: this.user,
               created_date: this.now
             }
           }
@@ -260,10 +259,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      baseUrl: 'baseUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

@@ -170,17 +170,14 @@ import {
 getDataSubcription
 } from 'src/graphql/Subscription'
 import { date } from 'quasar'
-import { mapState } from 'vuex'
 export default {
   name: 'ViewListSubscription',
-  props: ['Muser'],
   data() {
     return {
       userdata: this.Muser,
       filter: null,
       loading: false,
       dataSubscription: [],
-      // selected: JSON.parse(localStorage.selectedView),
       
       selected: JSON.parse(localStorage.selectedData),
       selectedview: [],
@@ -299,10 +296,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      baseUrl: 'baseUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

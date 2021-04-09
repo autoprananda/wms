@@ -46,7 +46,7 @@ query wms_menu {
 // delete WMS_Master_Menu
 export const DelMasterMenu = gql`
   mutation delete_wms_menu($code: String) {
-    delete_wms_menu(where: { menu_code: { _eq: $code } }) {
+    delete_wms_menu(where: { id_menu: { _eq: $code } }) {
       affected_rows
     }
   }

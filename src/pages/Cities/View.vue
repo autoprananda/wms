@@ -57,13 +57,8 @@
 <script>
 export default {
   name: 'ViewCIty',
-  props: ['Muser'],
   data() {
     return {
-      draggingFab: false,
-      fabPos: [18, 18],
-      token: this.ugAccessToken,
-      userdata: this.Muser,
       City: null,
       RegionName: null,
       submitting: false,

@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Countries List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataCountry"
                   :columns="columns"
                   row-key="id_country"
                   selection="single"
@@ -171,8 +171,7 @@
 </template>
 
 <script>
-
-import { GetAllCountries, DelMasterCountries } from 'src/graphql/Countries'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainCountries',
   data() {
@@ -207,16 +206,13 @@ export default {
       ],
     }
   },
-  apollo: {
-    loaddata: {
-      query: GetAllCountries,
-      update: data => data.wms_countries
-    }
+  computed: {
+    ...mapState('showcase', ['dataCountry']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataCountry()
+    this.loadingShow()
   },
 
   methods: {
@@ -227,15 +223,52 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataCountry', 'deleteDataCountry']),
+    loadingShow() {
+        if (this.dataCountry.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataCountry.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataCountry()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
+    },
+    onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataCountry(this.selected[0].id_country)
+      setTimeout(() => {
+        this.$q.loading.hide()
+        this.loading = false
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Has Been Removed'
+        })
+      }, 2000)
     },
     onAdd() {
       this.$router.push({ path: '/countries/add' })
@@ -251,24 +284,6 @@ export default {
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
       this.$router.push({ path: '/countries/view' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DelMasterCountries,
-          variables: {
-            code: this.selected[0].id_country
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

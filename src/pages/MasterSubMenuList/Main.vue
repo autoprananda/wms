@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Submenu List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataSubMenu"
                   :columns="columns"
                   row-key="id_submenu"
                   selection="single"
@@ -180,13 +180,10 @@
 </template>
 
 <script>
-import {
-  GetAllMasterSubMenu,
-  DelMasterSubMenu,
-  DelMasterRoleConfiguration
-} from 'src/graphql/MasterSubMenu'
+
+import { mapState, mapActions } from 'vuex'
 export default {
-  name: 'MainArea',
+  name: 'MainSubmenu',
   data() {
     return {
       loaddata: [],
@@ -226,18 +223,15 @@ export default {
       ]
     }
   },
-  apollo: {
-    loaddata: {
-      query: GetAllMasterSubMenu,
-      update: data => data.wms_submenu
-    }
+    computed: {
+    ...mapState('showcase', ['dataSubMenu']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataSubMenu()
+    this.loadingShow()
   },
-  
+
   methods: {
     getTime(file) {
       if (file !== undefined && file !== null) {
@@ -246,15 +240,52 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataSubMenu', 'deleteDataSubMenu']),
+    loadingShow() {
+        if (this.dataSubMenu.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataSubMenu.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataSubMenu()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
+    },
+    onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataSubMenu(this.selected[0].id_submenu)
+      setTimeout(() => {
+        this.$q.loading.hide()
+        this.loading = false
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Has Been Removed'
+        })
+      }, 2000)
     },
     onAdd() {
       this.$router.push({ path: '/submenu/add' })
@@ -270,30 +301,6 @@ export default {
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
       this.$router.push({ path: '/submenu/view' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DelMasterSubMenu,
-          variables: {
-            code: this.selected[0].id_submenu
-          }
-        })
-        this.$apollo.mutate({
-          mutation: DelMasterRoleConfiguration,
-          variables: {
-            code: this.selected[0].id_submenu
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

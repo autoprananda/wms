@@ -26,7 +26,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Customer List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataCustomer"
                   :columns="columns"
                   row-key="gcif_number"
                   selection="single"
@@ -129,7 +129,8 @@
 </template>
 
 <script>
-import { getDataCustomer, DeleteCustomer } from 'src/graphql/Customer/Customer'
+
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainSubcription',
   data() {
@@ -176,16 +177,13 @@ export default {
       ],
     }
   },
-  apollo: {
-    loaddata: {
-      query: getDataCustomer,
-      update: data => data.wms_customer
-    }
+      computed: {
+    ...mapState('showcase', ['dataCustomer']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataCustomer()
+    this.loadingShow()
   },
 
   methods: {
@@ -196,15 +194,36 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataCustomer']),
+    loadingShow() {
+        if (this.dataCustomer.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataCustomer.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataCustomer()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
     },
     onSubscribe() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected))
@@ -221,24 +240,6 @@ export default {
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
       this.$router.push({ path: '/subscription/viewlist' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DeleteCustomer,
-          variables: {
-            code: this.selected[0].gcif_number
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

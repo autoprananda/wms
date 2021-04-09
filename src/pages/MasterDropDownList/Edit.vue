@@ -221,16 +221,14 @@ import {
   DeleteDropDownListDetail,
   ViewDropDownListDetail
 } from 'src/graphql/MasterDropDownListDetail'
-import { mapState } from 'vuex'
 export default {
   name: 'EditDropDownList',
-  props: ['Muser'],
   data() {
     return {
+      user: this.$q.sessionStorage.getItem('username'),
       LoadDetail: false,
       loaddata: [],
       loading: false,
-      userdata: this.Muser,
       submitting: false,
       submittingAdd: false,
       DropDownListName: '',
@@ -321,7 +319,7 @@ export default {
               dropdown_details_code: this.CodeItem,
               dropdown_details_desc: this.ItemDescription,
               created_date: this.now,
-              created_by: 'auto_prananda'
+              created_by: this.user
             }
           }
         })
@@ -394,7 +392,7 @@ export default {
               dropdown_details_code: this.CodeItemEdit,
               dropdown_details_desc: this.ItemDescriptionEdit,
               modified_date: this.now,
-              modified_by: 'auto_prananda'
+              modified_by: this.user
             }
           }
         })
@@ -428,7 +426,7 @@ export default {
             changes: {
               dropdown_desc: this.DropDownListName,
               modified_date: this.now,
-              modified_by: 'auto_prananda'
+              modified_by: this.user
             }
           }
         })
@@ -564,9 +562,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

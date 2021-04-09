@@ -425,7 +425,6 @@ let init = ''
 import { getBankCustomer } from 'src/graphql/Customer/CustomerBank'
 export default {
   name: 'View',
-  props: ['Muser'],
   data() {
     return {
       submitting: false,

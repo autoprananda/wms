@@ -323,9 +323,6 @@
             </q-card>
           </transition>
         </q-card-section>
-        <q-page-scroller position="bottom-right" :scroll-offset="150" :offset="[30, 25]">
-          <q-btn fab icon="keyboard_arrow_up" color="negative" />
-        </q-page-scroller>
       </q-card>
     </q-page>
   </div>

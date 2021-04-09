@@ -173,16 +173,12 @@
 
 <script>
 import { date } from 'quasar'
-import { mapState } from 'vuex'
 import { InsertDropDownList } from 'src/graphql/MasterDropDownList'
 export default {
   name: 'AddDropDownList',
-  props: ['Muser'],
   data() {
     return {
-      draggingFab: false,
-      fabPos: [18, 18],
-      userdata: this.Muser,
+      user: this.$q.sessionStorage.getItem('username'),
       submitting: false,
       emessage: '',
       DropDownListName: '',
@@ -221,7 +217,7 @@ export default {
           dropdown_details_code: this.CodeItem,
           dropdown_details_desc: this.ItemDescription,
           created_date: this.now,
-          created_by: 'auto_prananda'
+          created_by: this.user
         })
         this.adding = false
         this.ClearAdd()
@@ -309,7 +305,7 @@ export default {
               dropdown_desc: this.DropDownListName,
               dropdown_code: this.DropDownListCode,
               created_date: this.now,
-              created_by: 'auto_prananda',
+              created_by: this.user,
               dropdown_list: { data: this.listData }
             }
           }
@@ -414,10 +410,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      baseUrl: 'baseUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

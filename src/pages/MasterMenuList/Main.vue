@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Menu List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataMenu"
                   :columns="columns"
                   row-key="id_menu"
                   selection="single"
@@ -180,7 +180,8 @@
 </template>
 
 <script>
-import { GetAllMasterMenu, DelMasterMenu } from 'src/graphql/MasterMenu'
+
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainMenu',
   data() {
@@ -224,16 +225,13 @@ export default {
       ]
     }
   },
-  apollo: {
-    loaddata: {
-      query: GetAllMasterMenu,
-      update: data => data.wms_menu
-    }
+  computed: {
+    ...mapState('showcase', ['dataMenu']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataMenu()
+    this.loadingShow()
   },
 
   methods: {
@@ -244,15 +242,52 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataMenu', 'deleteDataMenu']),
+    loadingShow() {
+        if (this.dataMenu.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataMenu.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataMenu()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
+    },
+    onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataMenu(this.selected[0].id_menu)
+      setTimeout(() => {
+        this.$q.loading.hide()
+        this.loading = false
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Has Been Removed'
+        })
+      }, 2000)
     },
     onAdd() {
       this.$router.push({ path: '/menu/add' })
@@ -268,24 +303,6 @@ export default {
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
       this.$router.push({ path: '/menu/view' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DelMasterMenu,
-          variables: {
-            code: this.selected[0].menu_code
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

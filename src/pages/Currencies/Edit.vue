@@ -73,13 +73,11 @@
 <script>
 import { date } from 'quasar'
 import { EditMasterCurrency } from 'src/graphql/Currency'
-import { mapState } from 'vuex'
 export default {
   name: 'Edit',
-  props: ['Muser'],
   data() {
     return {
-      userdata: this.Muser,
+      user: this.$q.sessionStorage.getItem('username'),
       CurrencyCode: '',
       Description: '',
       OldCode: '',
@@ -111,7 +109,7 @@ export default {
             changes: {
               currencies_code: this.CurrencyCode,
               currencies_desc: this.Description,
-              modified_by: 'auto_prananda',
+              modified_by: this.user,
               modified_date: this.now
             }
           }
@@ -200,10 +198,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      baseUrl: 'baseUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

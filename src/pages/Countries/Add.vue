@@ -64,14 +64,12 @@
 
 <script>
 import { InsMasterCountries } from 'src/graphql/Countries'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'AddCountry',
-  props: ['Muser'],
   data() {
     return {
-      userdata: this.Muser,
+      user: this.$q.sessionStorage.getItem('username'),
       CountryCode: '',
       Description: '',
       submitting: false
@@ -88,7 +86,7 @@ export default {
             objects: {
               country_code: this.CountryCode,
               country_name: this.Description,
-              created_by: 'auto_prananda',
+              created_by: this.user,
               created_date: this.now
             }
           }
@@ -193,9 +191,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

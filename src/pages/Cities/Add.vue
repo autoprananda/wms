@@ -75,16 +75,12 @@
 <script>
 import { ViewRegion } from 'src/graphql/Region'
 import { InsMasterCities } from 'src/graphql/Cities'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'AddCities',
-  props: ['Muser'],
   data() {
     return {
-      draggingFab: false,
-      fabPos: [18, 18],
-      userdata: this.Muser,
+      user: this.$q.sessionStorage.getItem('username'),
       City: '',
       RegionName: '',
       loadregion: [],
@@ -110,7 +106,7 @@ export default {
               id_region: this.RegionName.id_region,
               city_name: this.City,
               created_date: this.now,
-              created_by: 'auto_prananda'
+              created_by: this.user
             }
           }
         })
@@ -211,9 +207,6 @@ export default {
   },
 
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

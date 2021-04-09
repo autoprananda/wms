@@ -65,7 +65,6 @@
                   </q-btn>
                 </div>
               </div>
-              <!-- {{dataArea.length}} -->
               <q-card-section>
                 <q-table
                   class="q-ml-sm q-mr-sm table-label-color"
@@ -218,28 +217,34 @@ export default {
   methods: {
     ...mapActions('showcase', ['fetchDataArea', 'deleteDataArea']),
     loadingShow() {
-      this.$q.loading.show()
-      this.loading = true
-      setTimeout(() => {
-        if (this.dataArea.length !== 0) {
-          this.$q.loading.hide()
-          this.loading = false
-        } else {
-          this.$q.loading.hide()
-          this.loading = false
-          this.$q.notify({
-          timeout: 300,
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Empty'
-        })
+        if (this.dataArea.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataArea.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
         }
-      }, 2000);
     },
     onRefresh() {
-      this.fetchDataArea()
-      this.loadingShow()
+      this.loading = true
+      setTimeout(() => {
+        this.fetchDataArea()
+        this.loadingShow()
+        this.loading = false
+      }, 1000)
     },
     getTime(file) {
       if (file !== undefined && file !== null) {

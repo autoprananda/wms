@@ -419,7 +419,6 @@ let init = ''
 import { insertRedemption, GetGenerateRedemNo } from 'src/graphql/Redemption'
 import { getSubscriptionNo, UpdateBalanceAmount } from 'src/graphql/Subscription'
 import { GetLastNav } from 'src/graphql/NavUpload'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'Redemption',
@@ -962,9 +961,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
     now2() {
       let timeStamp = Date.now()

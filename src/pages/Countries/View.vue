@@ -60,10 +60,8 @@
 <script>
 export default {
   name: 'View',
-  props: ['Muser'],
   data() {
     return {
-      userdata: this.Muser,
       CountryCode: null,
       Description: null,
       submitting: false,

@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="City List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataCity"
                   :columns="columns"
                   row-key="id_city"
                   selection="single"
@@ -171,8 +171,7 @@
 </template>
 
 <script>
-
-import { GetAllMasterCities, DelMasterCities } from 'src/graphql/Cities'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainCity',
   data() {
@@ -207,35 +206,52 @@ export default {
       ],
     }
   },
-  apollo: {
-    loaddata: {
-      query: GetAllMasterCities,
-      update: data => data.wms_cities
-    }
+  computed: {
+    ...mapState('showcase', ['dataCity']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataCity()
+    this.loadingShow()
   },
-
   methods: {
+    ...mapActions('showcase', ['fetchDataCity', 'deleteDataCity']),
+    loadingShow() {
+        if (this.dataCity.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataCity.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
+    onRefresh() {
+      this.loading = true
+      setTimeout(() => {
+        this.fetchDataCity()
+        this.loadingShow()
+        this.loading = false
+      }, 1000)
+    },
     getTime(file) {
       if (file !== undefined && file !== null) {
         let date = file.split('T')
         date = date.join(' ')
         return date
       }
-    },
-    onRefresh() {
-      this.loading = true
-      setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
-        this.loading = false
-      }, 1000)
-
-      this.selected = []
     },
     onAdd() {
       this.$router.push({ path: '/cities/add' })
@@ -253,22 +269,20 @@ export default {
       this.$router.push({ path: '/cities/view' })
     },
     onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataCity(this.selected[0].id_city)
       setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DelMasterCities,
-          variables: {
-            code: this.selected[0].id_city
-          }
-        })
-        this.submitting = false
+        this.$q.loading.hide()
+        this.loading = false
         this.$q.notify({
+          timeout: 300,
           color: 'negative',
           textColor: 'white',
           icon: 'fas fa-exclamation-circle',
           message: 'The Data Has Been Removed'
         })
-        this.onRefresh()
-      })
+      }, 2000)
     },
     deleteDialog() {
       this.$q

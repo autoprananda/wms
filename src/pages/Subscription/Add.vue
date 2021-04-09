@@ -568,11 +568,9 @@ import { InsertSubscription, GetGenerateSubsNo } from 'src/graphql/Subscription'
 import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
 import { getProduct } from 'src/graphql/MasterProductCode'
 import { FilterBank } from 'src/graphql/Customer/CustomerBank'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'Subscription',
-  props: ['Muser'],
   data() {
     return {
       selected: JSON.parse(localStorage.selectedData),
@@ -967,9 +965,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
     now2() {
       let timeStamp = Date.now()

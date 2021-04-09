@@ -165,10 +165,8 @@ import {
 getDataRedemption
 } from 'src/graphql/Redemption'
 import { date } from 'quasar'
-import { mapState } from 'vuex'
 export default {
   name: 'ViewListSubscription',
-  props: ['Muser'],
   data() {
     return {
       userdata: this.Muser,
@@ -286,10 +284,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      baseUrl: 'baseUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

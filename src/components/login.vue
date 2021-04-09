@@ -128,41 +128,38 @@ export default {
         code: this.username
       }).then(response => {
         if (response.data.wms_m_user.length !== 0) {
-          this.Decrypt(response.data.wms_m_user[0].password)
+          this.decodedBase64(response.data.wms_m_user[0].password)
           if (this.passwordOri === this.password) {
             this.$q.sessionStorage.set('username', response.data.wms_m_user[0].username)
+            this.$q.notify({
+              color: 'accent',
+              textColor: 'white',
+              icon: 'fas fa-check-circle',
+              message: 'Welcome, ' + response.data.wms_m_user[0].fullname
+            })
             this.$router.push({ path: '/dashboard' })
           } else {
-            this.$q.notify({
-                color: 'negative',
-                timeout: 500,
-                textColor: 'white',
-                icon: 'fas fa-check-circle',
-                message: 'Password Wrong!'
-              })
+            this.wrongEmailorPassword()
           }
         } else {
-          this.$q.notify({
-                color: 'negative',
-                timeout: 500,
-                textColor: 'white',
-                icon: 'fas fa-check-circle',
-                message: 'Username not found!'
-              })
+          this.wrongEmailorPassword()
         }
-
       }).catch(error =>{
         console.log(error, 'Error')
       }) 
     },
-    Decrypt(value) {
-        let array = value.split('-');
-
-        for (let i = 0; i < array.length; i++) {
-          this.passwordOri += String.fromCharCode(array[i] - 10);
-        }
-        return this.passwordOri;
-      },
+    wrongEmailorPassword() {
+      this.$q.notify({
+        color: 'negative',
+        timeout: 500,
+        textColor: 'white',
+        icon: 'fas fa-exclamation-circle',
+        message: 'Username or Password Entered is Invalid'
+      })
+    },
+    decodedBase64(value) {		
+		this.passwordOri = atob(value)
+    },
     Register() {
       this.$router.push({ path: '/register' })
     }

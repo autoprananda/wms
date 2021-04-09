@@ -34,7 +34,7 @@
                           <div
                             class="self-center full-width no-outline"
                             tabindex="0"
-                          >{{ DropDownListName }}</div>
+                          > {{ DropDownListName }} </div>
                         </template>
                       </q-field>
                     </div>
@@ -68,11 +68,9 @@ let init = ''
 import { ViewDropDownListDetail } from 'src/graphql/MasterDropDownListDetail'
 export default {
   name: 'ViewDropDownList',
-  props: ['Muser'],
   data() {
     return {
       loaddata: [],
-      userdata: this.Muser,
       ItemSequence: '',
       DropDownListName: '',
       DropDownListCode: '',

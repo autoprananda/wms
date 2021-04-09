@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Product List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataProduct"
                   :columns="columns"
                   row-key="id_product"
                   selection="single"
@@ -222,10 +222,8 @@
 </template>
 
 <script>
-import {
-  GetAllMasterProdCode,
-  DelMasterProdCode
-} from 'src/graphql/MasterProductCode'
+
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainProduct',
   data() {
@@ -282,16 +280,13 @@ export default {
       ]
     }
   },
-  apollo: {
-    loaddata: {
-      query: GetAllMasterProdCode,
-      update: data => data.wms_products
-    }
+    computed: {
+    ...mapState('showcase', ['dataProduct']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataProduct()
+    this.loadingShow()
   },
 
   methods: {
@@ -302,15 +297,52 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataProduct', 'deleteDataProduct']),
+    loadingShow() {
+        if (this.dataProduct.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataProduct.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataProduct()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
+    },
+    onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataProduct(this.selected[0].id_product)
+      setTimeout(() => {
+        this.$q.loading.hide()
+        this.loading = false
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Has Been Removed'
+        })
+      }, 2000)
     },
     onAdd() {
       this.$router.push({ path: '/masterproduct/add' })
@@ -326,24 +358,6 @@ export default {
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
       this.$router.push({ path: '/masterproduct/view' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DelMasterProdCode,
-          variables: {
-            code: this.selected[0].id_product
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

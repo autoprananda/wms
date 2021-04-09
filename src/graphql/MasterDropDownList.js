@@ -17,8 +17,8 @@ export const InsertDropDownList = gql`
 // View:  get all field from master_dropdownlist_header
 
 export const ViewDropDownList = gql`
-  query wms_dropdown_lists {
-    wms_dropdown_lists {
+  query wms_dropdown_lists{
+    wms_dropdown_lists(order_by: {created_date: desc}){
       created_by
       created_date
       dropdown_code

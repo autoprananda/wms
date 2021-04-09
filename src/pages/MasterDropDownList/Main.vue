@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Dropdown List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataDropDown"
                   :columns="columns"
                   row-key="id_dropdown"
                   selection="single"
@@ -171,10 +171,8 @@
 </template>
 
 <script>
-import {
-  ViewDropDownList,
-  DeleteDropDownList
-} from 'src/graphql/MasterDropDownList'
+
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainDropdown',
   data() {
@@ -206,16 +204,13 @@ export default {
       ]
     }
   },
-   apollo: {
-    loaddata: {
-      query: ViewDropDownList,
-      update: data => data.wms_dropdown_lists
-    }
+     computed: {
+    ...mapState('showcase', ['dataDropDown']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataDropDown()
+    this.loadingShow()
   },
 
   methods: {
@@ -226,15 +221,52 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataDropDown', 'deleteDataDropDown']),
+    loadingShow() {
+        if (this.dataDropDown.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataDropDown.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataDropDown()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
+    },
+    onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataDropDown(this.selected[0].id_dropdown)
+      setTimeout(() => {
+        this.$q.loading.hide()
+        this.loading = false
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Has Been Removed'
+        })
+      }, 2000)
     },
     onAdd() {
       this.$router.push({ path: '/masterdropdownlist/add' })
@@ -250,24 +282,6 @@ export default {
     onView() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected[0]))
       this.$router.push({ path: '/masterdropdownlist/view' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DeleteDropDownList,
-          variables: {
-            code: this.selected[0].id_dropdown
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

@@ -97,7 +97,6 @@
 <script>
 export default {
   name: 'ViewRole',
-  props: ['Muser'],
   data() {
     return {
       draggingFab: false,

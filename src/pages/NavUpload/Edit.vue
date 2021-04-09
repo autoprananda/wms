@@ -135,11 +135,9 @@
 import { EditNav } from 'src/graphql/NavUpload'
 import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
 import { getProduct } from 'src/graphql/MasterProductCode'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
-  name: 'AddArea',
-  props: ['Muser'],
+  name: 'EditNav',
   data() {
     return {
       OldCode: '',
@@ -286,9 +284,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss'),
     now2() {
       let timeStamp = Date.now()

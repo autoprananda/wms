@@ -107,30 +107,21 @@ export default {
     trim() {
       this.username = this.username.replace(/ /g,'')
     },
-    Encrypt(value) {
-        for (let i = 0; i < value.length; i++) {
-          if (i < value.length - 1) {
-            this.passwordLast += value.charCodeAt(i) + 10;
-            this.passwordLast += '-';
-          } else {
-            this.passwordLast += value.charCodeAt(i) + 10;
-          }
-        }
-        console.log(this.passwordLast, 'hasil')
-        return this.passwordLast;
-      },
+    encodedToBase64(value) {
+      this.passwordLast = btoa(value)
+    },
     Register() {
       if (this.password !== this.confirmPassword) {
       this.$q.notify({
               color: 'negative',
               timeout: 300,
               textColor: 'white',
-              icon: 'fas fa-check-circle',
+              icon: 'fas fa-exclamation-circle',
               message: 'Password did not match'
             })
       } else {
         this.register = true
-        this.Encrypt(this.password)
+        this.encodedToBase64(this.password)
         this.$apollo
           .mutate({
             mutation: Register,
@@ -158,7 +149,7 @@ export default {
             this.$q.notify({
               color: 'negative',
               textColor: 'white',
-              icon: 'fas fa-check-circle',
+              icon: 'fas fa-exclamation-circle',
               message: 'Username '+ this.username + ' already exist'
             })
           })

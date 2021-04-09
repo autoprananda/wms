@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Region List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataRegion"
                   :columns="columns"
                   row-key="id_region"
                   selection="single"
@@ -172,7 +172,7 @@
 
 <script>
 
-import { ViewRegion, DeleteRegion } from 'src/graphql/Region'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainRegion',
   data() {
@@ -207,16 +207,13 @@ export default {
       ],
     }
   },
-  apollo: {
-    loaddata: {
-      query: ViewRegion,
-      update: data => data.wms_region
-    }
+  computed: {
+    ...mapState('showcase', ['dataRegion']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataRegion()
+    this.loadingShow()
   },
 
   methods: {
@@ -227,15 +224,52 @@ export default {
         return date
       }
     },
+    ...mapActions('showcase', ['fetchDataRegion', 'deleteDataRegion']),
+    loadingShow() {
+        if (this.dataRegion.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataRegion.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
     onRefresh() {
       this.loading = true
       setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
+        this.fetchDataRegion()
+        this.loadingShow()
         this.loading = false
       }, 1000)
-
-      this.selected = []
+    },
+    onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataRegion(this.selected[0].id_region)
+      setTimeout(() => {
+        this.$q.loading.hide()
+        this.loading = false
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-exclamation-circle',
+          message: 'The Data Has Been Removed'
+        })
+      }, 2000)
     },
     onAdd() {
       this.$router.push({ path: '/region/add' })
@@ -251,24 +285,6 @@ export default {
     onViewclick(dataclick) {
       localStorage.setItem('selectedData', JSON.stringify(dataclick))
       this.$router.push({ path: '/region/view' })
-    },
-    onDelete() {
-      setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DeleteRegion,
-          variables: {
-            code: this.selected[0].id_region
-          }
-        })
-        this.submitting = false
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'The Data Has Been Removed'
-        })
-        this.onRefresh()
-      })
     },
     deleteDialog() {
       this.$q

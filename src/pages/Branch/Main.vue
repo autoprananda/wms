@@ -70,7 +70,7 @@
                   class="q-ml-sm q-mr-sm table-label-color"
                   title="Branch List"
                   :grid="$q.screen.xs"
-                  :data="loaddata"
+                  :data="dataBranch"
                   :columns="columns"
                   row-key="id_branch"
                   selection="single"
@@ -183,8 +183,7 @@
 </template>
 
 <script>
-
-import { GetAllBranch, DelBranch } from 'src/graphql/MasterBranch'
+import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainBranch',
   data() {
@@ -237,35 +236,53 @@ export default {
       ],
     }
   },
-  apollo: {
-    loaddata: {
-      query: GetAllBranch,
-      update: data => data.wms_branches
-    }
+  computed: {
+    ...mapState('showcase', ['dataBranch']),
   },
   mounted() {
-    this.$q.loading.show()
     localStorage.removeItem('selectedData')
-    this.onRefresh()
+    this.fetchDataBranch()
+    this.loadingShow()
   },
 
   methods: {
+    ...mapActions('showcase', ['fetchDataBranch', 'deleteDataBranch']),
+    loadingShow() {
+        if (this.dataBranch.length === 0) {
+          this.$q.loading.show()
+          this.loading = true
+          setTimeout(() => {
+            if (this.dataBranch.length !== 0) {
+              this.$q.loading.hide()
+              this.loading = false
+            } else {
+              this.$q.loading.hide()
+              this.loading = false
+              this.$q.notify({
+                timeout: 300,
+                color: 'negative',
+                textColor: 'white',
+                icon: 'fas fa-exclamation-circle',
+                message: 'The Data Empty'
+              })
+            }
+          }, 2000)
+        }
+    },
+    onRefresh() {
+      this.loading = true
+      setTimeout(() => {
+        this.fetchDataBranch()
+        this.loadingShow()
+        this.loading = false
+      }, 1000)
+    },
     getTime(file) {
       if (file !== undefined && file !== null) {
         let date = file.split('T')
         date = date.join(' ')
         return date
       }
-    },
-    onRefresh() {
-      this.loading = true
-      setTimeout(() => {
-        this.$apollo.queries.loaddata.refetch()
-        this.$q.loading.hide()
-        this.loading = false
-      }, 1000)
-
-      this.selected = []
     },
     onAdd() {
       this.$router.push({ path: '/branch/add' })
@@ -312,23 +329,21 @@ export default {
         })
     },
     onDelete() {
+      this.$q.loading.show()
+      this.loading = true
+      this.deleteDataBranch(this.selected[0].id_branch)
       setTimeout(() => {
-        this.$apollo.mutate({
-          mutation: DelBranch,
-          variables: {
-            code: this.selected[0].id_branch
-          }
-        })
-        this.submitting = false
+        this.$q.loading.hide()
+        this.loading = false
         this.$q.notify({
+          timeout: 300,
           color: 'negative',
           textColor: 'white',
           icon: 'fas fa-exclamation-circle',
           message: 'The Data Has Been Removed'
         })
-        this.onRefresh()
-      })
-    },
+      }, 2000)
+    }
   }
 }
 </script>

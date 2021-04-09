@@ -144,11 +144,9 @@ import { EditBranch } from 'src/graphql/MasterBranch'
 import { viewArea } from 'src/graphql/Area'
 import { GetRegion } from 'src/graphql/Region'
 import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'EditBranch',
-  props: ['Muser'],
   data() {
     return {
       userdata: this.Muser,
@@ -162,6 +160,7 @@ export default {
       OldCode: '',
       submitting: false,
       selected: JSON.parse(localStorage.selectedData),
+      user: this.$q.sessionStorage.getItem('username'),
       loadRegion: [],
       loadStatus: []
     }
@@ -215,7 +214,7 @@ export default {
               id_status: this.Status.id_dropdownlist_detail,
               id_area: this.Area.id_area,
               id_region: this.Region.id_region,
-              modified_by: 'auto_prananda',
+              modified_by: this.user,
               modified_date: this.now
             }
           }
@@ -304,9 +303,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

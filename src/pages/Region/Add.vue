@@ -90,13 +90,12 @@
 <script>
 import { InsertRegion } from 'src/graphql/Region'
 import { GetAllCountries } from 'src/graphql/Countries'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'AddRegion',
-  props: ['Muser'],
   data() {
     return {
+      user: this.$q.sessionStorage.getItem('username'),
       userdata: this.Muser,
       RegionName: '',
       RegionCode: '',
@@ -123,7 +122,7 @@ export default {
               region_name: this.RegionName,
               id_country: this.Country.id_country,
               created_date: this.now,
-              created_by: 'auto_prananda'
+              created_by: this.user
             }
           }
         })
@@ -231,9 +230,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

@@ -474,11 +474,9 @@ import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
 import { GetBranch } from 'src/graphql/MasterBranch'
 import { GetMasterCurrency } from 'src/graphql/Currency'
 import { InsertProduct } from 'src/graphql/MasterProductCode'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'AddProduct',
-  props: ['Muser'],
   data() {
     return {
       optClassification: [],
@@ -772,70 +770,15 @@ export default {
         })
         .onOk(() => {
           console.log('>>>> OK')
-          this.$router.push({ path: '/masterproduct.' })
+          this.$router.push({ path: '/masterproduct' })
         })
 
         .onCancel(() => {
           console.log('>>>> Cancel')
         })
     }
-    // saveLogger(flag, data) {
-    //   if (data === null) {
-    //     console.log('Masukkkkkkkk')
-    //     this.$axios
-    //       .post(
-    //         this.baseUrl + '/api/batm/wms/WMS_AUDIT_TRAIL',
-    //         {
-    //           Audit_User_id: this.userdata.username,
-    //           Audit_User_name: 'auto_prananda',
-    //           Audit_Module: 'System and User Management',
-    //           Audit_Menu: 'Region',
-    //           Audit_Action: flag,
-    //           Audit_With_Approvel: '',
-    //           Audit_Data_Json: '',
-    //           Audit_Action_Datetime: this.now
-    //         },
-    //         {
-    //           headers: {
-    //             Authorization: 'Bearer ' + this.token
-    //           }
-    //         }
-    //       )
-    //       .then(response => {
-    //         this.statetrue = response.data.entities
-    //         this.$log.debug('Debug', response)
-    //       })
-    //   } else if (data !== null) {
-    //     this.$axios
-    //       .post(
-    //         this.baseUrl + '/api/batm/wms/WMS_AUDIT_TRAIL',
-    //         {
-    //           Audit_User_id: this.userdata.username,
-    //           Audit_User_name: 'auto_prananda',
-    //           Audit_Module: 'System and User Management',
-    //           Audit_Menu: 'Region',
-    //           Audit_Action: flag,
-    //           Audit_With_Approvel: '',
-    //           Audit_Data_Json: data,
-    //           Audit_Action_Datetime: this.now
-    //         },
-    //         {
-    //           headers: {
-    //             Authorization: 'Bearer ' + this.token
-    //           }
-    //         }
-    //       )
-    //       .then(response => {
-    //         this.statetrue = response.data.entities
-    //         this.$log.debug('Debug', response)
-    //       })
-    //   }
-    // }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

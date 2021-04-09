@@ -123,14 +123,11 @@
 import { date } from 'quasar'
 import { GetMasterMenu } from 'src/graphql/MasterMenu'
 import { InsMasterSubMenu } from 'src/graphql/MasterSubMenu'
-
 export default {
   name: 'AddMasterSubMenu',
-  props: ['Muser'],
   data() {
     return {
-      draggingFab: false,
-      fabPos: [18, 18],
+      user: this.$q.sessionStorage.getItem('username'),
       submitting: false,
       emessage: '',
       optMenuDesc: [],
@@ -161,7 +158,7 @@ export default {
               submenu_desc: this.SubMenuDesc,
               order_key: +this.SortOrder,
               path: this.Path,
-              created_by: 'auto_prananda',
+              created_by: this.user,
               created_date: this.now
             }
           }

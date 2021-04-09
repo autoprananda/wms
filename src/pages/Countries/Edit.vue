@@ -64,18 +64,16 @@
 
 <script>
 import { EditMasterCountries } from 'src/graphql/Countries'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'EditCountry',
-  props: ['Muser'],
   data() {
     return {
-      userdata: this.Muser,
       CountryCode: '',
       Description: '',
       OldCode: '',
       submitting: false,
+      user: this.$q.sessionStorage.getItem('username'),
       selected: JSON.parse(localStorage.selectedData)
     }
   },
@@ -103,7 +101,7 @@ export default {
             changes: {
               country_code: this.CountryCode,
               country_name: this.Description,
-              modified_by: 'auto_prananda',
+              modified_by: this.user,
               modified_date: this.now
             }
           }
@@ -193,9 +191,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

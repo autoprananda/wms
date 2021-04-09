@@ -65,11 +65,9 @@
 
 <script>
 import { insertArea } from 'src/graphql/Area'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'AddArea',
-  props: ['Muser'],
   data() {
     return {
       AreaName: '',
@@ -196,9 +194,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

@@ -87,13 +87,11 @@
 import { EditRegion } from 'src/graphql/Region'
 import { GetAllCountries } from 'src/graphql/Countries'
 import { date } from 'quasar'
-import { mapState } from 'vuex'
 export default {
   name: 'EditRegion',
-  props: ['Muser'],
   data() {
     return {
-      userdata: this.Muser,
+      user: this.$q.sessionStorage.getItem('username'),
       RegionName: '',
       RegionCode: '',
       Country: {},
@@ -118,11 +116,6 @@ export default {
     }
   },
   methods: {
-    moveFab(ev) {
-      this.draggingFab = ev.isFirst !== true && ev.isFinal !== true
-
-      this.fabPos = [this.fabPos[0] - ev.delta.x, this.fabPos[1] - ev.delta.y]
-    },
     onBindData() {
       this.RegionCode = this.selected[0].region_code
       this.RegionName = this.selected[0].region_name
@@ -141,7 +134,7 @@ export default {
               region_name: this.RegionName,
               id_country: this.Country.id_country,
               modified_date: this.now,
-              modified_by: 'auto_prananda'
+              modified_by: this.user
             }
           }
         })
@@ -227,9 +220,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

@@ -39,13 +39,11 @@
 <script>
 import ComponentLogin from '../components/login.vue'
 import { version } from '../../package.json'
-// import ComponentRegister from '../components/registration.vue'
 export default {
   data() {
     return {
       tab: 'one',
       appversion: version
-      // loading: false
     }
   },
   components: {

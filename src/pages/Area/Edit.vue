@@ -66,21 +66,16 @@
 <script>
 import { editArea } from 'src/graphql/Area'
 import { date } from 'quasar'
-import { mapState } from 'vuex'
 export default {
   name: 'EditArea',
-  props: ['Muser'],
   data() {
     return {
-      draggingFab: false,
-      fabPos: [18, 18],
-      userdata: this.Muser,
-      // userdata: state.user,
       AreaName: '',
       AreaCode: '',
       Country: '',
       submitting: false,
       OldCode: '',
+      user: this.$q.sessionStorage.getItem('username'),
       selected: JSON.parse(localStorage.selectedData)
     }
   },
@@ -102,14 +97,14 @@ export default {
       this.submitting = true
       this.$apollo
         .mutate({
-          mutation: EditArea,
+          mutation: editArea,
           variables: {
             code: this.OldCode,
             changes: {
               area_code: this.AreaCode,
               area_name: this.AreaName,
               modified_date: this.now,
-              modified_by: 'auto_prananda'
+              modified_by: this.user
             }
           }
         })
@@ -196,9 +191,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }

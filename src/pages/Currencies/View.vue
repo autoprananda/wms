@@ -60,10 +60,8 @@
 <script>
 export default {
   name: 'View',
-  props: ['Muser'],
   data() {
     return {
-      userdata: this.Muser,
       CurrencyCode: null,
       Description: null,
       OldCode: '',
@@ -80,7 +78,6 @@ export default {
   },
   methods: {
     onBindData() {
-      console.log(this.selected, 'isinya')
       this.CurrencyCode = this.selected.currencies_code
       this.Description = this.selected.currencies_desc
       this.OldCode = this.selected.currencies_code

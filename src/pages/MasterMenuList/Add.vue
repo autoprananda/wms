@@ -93,11 +93,9 @@ import { date } from 'quasar'
 import { InsMasterMenu } from 'src/graphql/MasterMenu'
 export default {
   name: 'AddMasterMenu',
-  props: ['Muser'],
   data() {
     return {
-      draggingFab: false,
-      fabPos: [18, 18],
+      user: this.$q.sessionStorage.getItem('username'),
       submitting: false,
       emessage: '',
       MenuCode: '',
@@ -108,11 +106,6 @@ export default {
     }
   },
   methods: {
-    moveFab(ev) {
-      this.draggingFab = ev.isFirst !== true && ev.isFinal !== true
-
-      this.fabPos = [this.fabPos[0] - ev.delta.x, this.fabPos[1] - ev.delta.y]
-    },
     SubmitButton() {
       this.submitting = true
       this.$apollo
@@ -124,7 +117,7 @@ export default {
               menu_desc: this.MenuDescription,
               order_key: +this.SortOrder,
               icon: this.GrupIcon,
-              created_by: 'auto_prananda',
+              created_by: this.user,
               created_date: this.now
             }
           }
