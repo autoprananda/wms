@@ -12,22 +12,20 @@ import VueApollo from 'vue-apollo'
 import fetch from 'node-fetch'
 import { createHttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
-
 import { getMainDefinition } from 'apollo-utilities'
-// import { LocalStorage } from 'quasar'
+
 const adminkey = 'CicaazFQDaN9HaqMO9YQXMzWAz3JCY7H2N9RlmNeUJ2Jr5eReKV7o9YLIJZpywcd'
-// const token = LocalStorage.getItem('ugAccessToken') // token dari keycloak login
+const token = localStorage.getItem('ugAccessToken')
 const httpLink = createHttpLink({
   uri: 'https://wms-dev.hasura.app/v1/graphql',
   fetch: fetch
 })
 const authMiddleware = new ApolloLink((operation, forward) => {
   // add the authorization to the headers
-
   operation.setContext({
     headers: {
-      'x-hasura-access-key': adminkey
-      // Authorization: 'bearer ' + token
+      'x-hasura-access-key': adminkey,
+      Authorization: 'bearer ' + token
     }
   })
 
@@ -41,8 +39,8 @@ const wsLink = new WebSocketLink({
     reconnect: true,
     connectionParams: {
       headers: {
-        'x-hasura-access-key': adminkey
-        // Authorization: 'bearer ' + token
+        'x-hasura-access-key': adminkey,
+        Authorization: 'bearer ' + token
       }
     }
   }
