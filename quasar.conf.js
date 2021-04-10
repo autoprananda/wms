@@ -12,6 +12,7 @@ module.exports = function (/* ctx */) {
   return {
     // https://v1.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
+    preFetch: true,
 
     // https://v1.quasar.dev/quasar-cli/prefetch-feature
     // preFetch: true,
@@ -155,6 +156,7 @@ module.exports = function (/* ctx */) {
 
     // Full list of options: https://v1.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
+      id: 'org.cordova.quasar.app'
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
     },
 

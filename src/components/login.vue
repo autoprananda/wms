@@ -85,11 +85,10 @@
 <script>
 
 let init = ''
-
+import { mapState, mapActions } from 'vuex'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { GetUser } from 'src/graphql/MasterUser'
-import { mapState } from 'vuex'
 import { date } from 'quasar'
 export default {
   name: 'LoginComponent',
@@ -124,7 +123,16 @@ export default {
       }
     }
   },
+  mounted() {
+  },
   methods: {
+    ...mapActions('showcase', {
+      doLogin: 'login',
+      doToken: 'token',
+      doRToken: 'rtoken',
+      dotokensExpiry: 'tokensExpiry',
+      doAppsMode: 'appsmode'
+    }),
     LoginButton() {
       this.$apollo.queries.loaddata.refetch({
         code: this.username
@@ -132,28 +140,48 @@ export default {
         if (response.data.wms_m_user.length !== 0) {
           let passwordCheck = bcryptjs.compareSync(this.password, response.data.wms_m_user[0].password)
           if (passwordCheck) {
-            let token = jwt.sign({
+            this.token = jwt.sign({
               id: response.data.wms_m_user[0].id,
               username: response.data.wms_m_user[0].username
             }, 'SECRET')
-            console.log(token, 'token');
-            this.$q.sessionStorage.set('username', response.data.wms_m_user[0].username)
-            this.$q.notify({
-              color: 'accent',
-              textColor: 'white',
-              icon: 'fas fa-check-circle',
-              message: 'Welcome, ' + response.data.wms_m_user[0].fullname
-            })
-            // this.$router.push({ path: '/dashboard' })
+            console.log(this.token, 'token');
+            let decoded = jwt.verify(this.token, 'SECRET')
+            this.doLogin(decoded)
+            this.doToken(this.token)
+            this.doRToken(this.token)
+            let ms = Number(decoded.iat + '000')
+            let exptime = date.formatDate(ms, 'YYYY-MM-DD HH:mm:ss')
+            this.dotokensExpiry(exptime)
+            // this.$q.sessionStorage.set('username', response.data.wms_m_user[0].username)
+            setTimeout(() => {
+              this.$q.notify({
+                color: 'accent',
+                textColor: 'white',
+                icon: 'fas fa-check-circle',
+                message: 'Welcome, ' + decoded.username
+              })
+              this.popupselection('wms')
+            }, 1000);
           } else {
             this.wrongEmailorPassword()
           }
         } else {
           this.wrongEmailorPassword()
         }
-      }).catch(error =>{
+      }).catch(error => {
         console.log(error, 'Error')
-      }) 
+      })
+    },
+    popupselection(apps) {
+      if (apps === 'wms') {
+        this.doAppsMode(apps)
+        this.$q.loading.show()
+        setTimeout(() => {
+          this.$q.loading.hide()
+          this.$router.push({ path: '/dashboard' })
+        }, 1000);
+        
+      }
     },
     wrongEmailorPassword() {
       this.$q.notify({
@@ -163,9 +191,6 @@ export default {
         icon: 'fas fa-exclamation-circle',
         message: 'Username or Password Entered is Invalid'
       })
-    },
-    decodedBase64(value) {		
-		this.passwordOri = atob(value)
     },
     Register() {
       this.$router.push({ path: '/register' })

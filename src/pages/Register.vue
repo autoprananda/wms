@@ -1,77 +1,76 @@
 <template>
-  <q-page> 
+  <q-page>
     <q-card class="row items-center absolute-center" style="width: 450px; max-width: 100%">
-       <q-card-section class="col-12 flex flex-center">
-         <q-tab-panel name="one">
-           <q-card-section class="q-mr-md text-center">
-             <img src="../statics/artha.png" style="width: 35%" />
-           </q-card-section>
-           <br>
-             <div class="row q-col-gutter-md">
-               <div class="col-12">
-                 <q-input type="fullname" ref="fullname" @input="trim" outlined v-model="fullname" label="Full Name">
-                   <template v-slot:prepend>
-                     <q-icon name="person" />
-                   </template>
-                   <template v-slot:append>
-                     <q-icon name="close" @click="fullname = ''" class="cursor-pointer" v-show="fullname" />
-                   </template>
-                 </q-input>
-               </div>
-               <div class="col-12">
-                 <q-input type="username" ref="username" @input="trim" outlined v-model="username" label="Username">
-                   <template v-slot:prepend>
-                     <q-icon name="person" />
-                   </template>
-                   <template v-slot:append>
-                     <q-icon name="close" @click="username = ''" class="cursor-pointer" v-show="username" />
-                   </template>
-                 </q-input>
-               </div>
-               <div class="col-12">
-                 <q-input v-model="password" outlined label="Password" :type="isPwd ? 'password' : 'text'"
-                   ref="password" :rules="[ val => val.length >= 8 || 'Please use minimum 8 characters']">
-                   <template v-slot:prepend>
-                     <q-icon name="mdi-textbox-password" />
-                   </template>
-                   <template v-slot:append>
-                     <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                       @click="isPwd = !isPwd" v-show="password" />
-                   </template>
-                 </q-input>
-               </div>
-               <div class="col-12">
-                <q-input v-model="confirmPassword" outlined label="Confirm Password"
-                  :type="isCnPwd ? 'password' : 'text'" ref="confirmPassword"
-                  :rules="[ val => val.length >= 8 || 'Please use minimum 8 characters']">
-                  <template v-slot:prepend>
-                    <q-icon name="mdi-textbox-password" />
-                  </template>
-                  <template v-slot:append>
-                    <q-icon :name="isCnPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
-                      @click="isCnPwd = !isCnPwd" v-show="confirmPassword" />
-                  </template>
-                </q-input>
-               </div>
-                   <div class="col-12">
-                     <q-btn :disable="!password || !confirmPassword || !username" dense color="primary" class="full-width" @click="Register" type="submit"
-                       :loading="register" no-caps label="Register">
-                       <template v-slot:loading>
-                         <q-spinner-facebook />
-                       </template>
-                     </q-btn>
-                   </div>
-                   <div class="col-12">
-                     <q-btn dense color="accent" @click="Login" outline class="full-width" type="submit"
-                       :loading="submitting" no-caps label="Login">
-                       <template v-slot:loading>
-                         <q-spinner-facebook />
-                       </template>
-                     </q-btn>
-                   </div>
-             </div>
-         </q-tab-panel>
-       </q-card-section>
+      <q-card-section class="col-12 flex flex-center">
+        <q-tab-panel name="one">
+          <q-card-section class="q-mr-md text-center">
+            <img src="../statics/artha.png" style="width: 35%" />
+          </q-card-section>
+          <br>
+          <div class="row q-col-gutter-md">
+            <div class="col-12">
+              <q-input type="fullname" ref="fullname" @input="trim" outlined v-model="fullname" label="Full Name">
+                <template v-slot:prepend>
+                  <q-icon name="person" />
+                </template>
+                <template v-slot:append>
+                  <q-icon name="close" @click="fullname = ''" class="cursor-pointer" v-show="fullname" />
+                </template>
+              </q-input>
+            </div>
+            <div class="col-12">
+              <q-input type="username" ref="username" @input="trim" outlined v-model="username" label="Username">
+                <template v-slot:prepend>
+                  <q-icon name="person" />
+                </template>
+                <template v-slot:append>
+                  <q-icon name="close" @click="username = ''" class="cursor-pointer" v-show="username" />
+                </template>
+              </q-input>
+            </div>
+            <div class="col-12">
+              <q-input v-model="password" outlined label="Password" :type="isPwd ? 'password' : 'text'" ref="password"
+                :rules="[ val => val.length >= 8 || 'Please use minimum 8 characters']">
+                <template v-slot:prepend>
+                  <q-icon name="mdi-textbox-password" />
+                </template>
+                <template v-slot:append>
+                  <q-icon :name="isPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer" @click="isPwd = !isPwd"
+                    v-show="password" />
+                </template>
+              </q-input>
+            </div>
+            <div class="col-12">
+              <q-input v-model="confirmPassword" outlined label="Confirm Password" :type="isCnPwd ? 'password' : 'text'"
+                ref="confirmPassword" :rules="[ val => val.length >= 8 || 'Please use minimum 8 characters']">
+                <template v-slot:prepend>
+                  <q-icon name="mdi-textbox-password" />
+                </template>
+                <template v-slot:append>
+                  <q-icon :name="isCnPwd ? 'visibility_off' : 'visibility'" class="cursor-pointer"
+                    @click="isCnPwd = !isCnPwd" v-show="confirmPassword" />
+                </template>
+              </q-input>
+            </div>
+            <div class="col-12">
+              <q-btn :disable="!password || !confirmPassword || !username" dense color="primary" class="full-width"
+                @click="Register" type="submit" :loading="register" no-caps label="Register">
+                <template v-slot:loading>
+                  <q-spinner-facebook />
+                </template>
+              </q-btn>
+            </div>
+            <div class="col-12">
+              <q-btn dense color="accent" @click="Login" outline class="full-width" type="submit" :loading="submitting"
+                no-caps label="Login">
+                <template v-slot:loading>
+                  <q-spinner-facebook />
+                </template>
+              </q-btn>
+            </div>
+          </div>
+        </q-tab-panel>
+      </q-card-section>
     </q-card>
   </q-page>
 </template>

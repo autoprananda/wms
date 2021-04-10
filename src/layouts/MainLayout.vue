@@ -76,7 +76,7 @@
                   <q-item-section top>
                     <q-item-label  v-if="data.length !== 0" lines="1" class="q-mt-sm q-mb-sm">
                       <span class="text-weight-bold" style="font-size: 17px">{{
-                        data[0].fullname
+                        username
                       }}</span>
                     </q-item-label>
                     <q-item-label>
@@ -87,7 +87,7 @@
                           label="Logout"
                           push
                           size="xs"
-                          @click="LogoutDialog"
+                          @click="logoutDialog"
                         />
                       </div>
                     </q-item-label>
@@ -102,7 +102,7 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <Menulist />
+      <Menulist :ugAccessToken="token"/>
     </q-drawer>
 
     <q-page-container>
@@ -113,41 +113,50 @@
 
 <script>
 let init = ''
+let auth, userdata, token, refreshToken, tokenExp
+
 import Menulist from 'components/MenuList.vue'
 import { GetUser } from 'src/graphql/MasterUser'
 export default {
   name: 'MainLayout',
-  components: { Menulist },
+  preFetch({ store, currentRoute, previousRoute, redirect }) {
+    if (store.getters['showcase/isAuth']) {
+      if (!store.getters['showcase/appsmode']) {
+        redirect('/')
+      }
+      userdata = store.getters['showcase/user']
+      auth = store.getters['showcase/isAuth']
+      token = store.getters['showcase/token']
+      refreshToken = store.getters['showcase/rtoken']
+      tokenExp = store.getters['showcase/tokensExpiry']
+    } else {
+      redirect('/')
+    }
+  },
   data () {
     return {
       leftDrawerOpen: false,
-      username: this.$q.sessionStorage.getItem('username'),
+      userdata: userdata,
+      username: userdata.username,
+      auth: auth,
+      token: token,
+      refreshToken: refreshToken,
+      tokenExp: tokenExp,
       data: []
     }
   },
-  apollo: {
-    getDataUser: {
-      query: GetUser,
-      update: data => data.wms_m_user,
-      variables: {
-        code: init
-      }
-    }
+  components: { Menulist },
+  computed: {
   },
   mounted() {
     this.getDataUser()
   },
   methods: {
     getDataUser() {
-      this.$apollo.queries.getDataUser
-        .refetch({
-          code: this.username
-        })
-        .then(response => {
-          this.data = response.data.wms_m_user
-        })
+      this.data.push(this.userdata)
+      console.log(this.data, 'data');
     },
-    LogoutDialog() {
+    logoutDialog() {
       this.$q
         .dialog({
           title: 'Confirmation',
