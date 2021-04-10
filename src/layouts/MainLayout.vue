@@ -76,7 +76,7 @@
                   <q-item-section top>
                     <q-item-label  v-if="data.length !== 0" lines="1" class="q-mt-sm q-mb-sm">
                       <span class="text-weight-bold" style="font-size: 17px">{{
-                        username
+                        userdata.fullname
                       }}</span>
                     </q-item-label>
                     <q-item-label>
@@ -102,11 +102,11 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <Menulist :ugAccessToken="token"/>
+      <Menulist :userLogin="userdata" :ugAccessToken="token"/>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view :userLogin="userdata" :ugAccessToken="token"/>
     </q-page-container>
   </q-layout>
 </template>
@@ -115,6 +115,8 @@
 let init = ''
 let auth, userdata, token, refreshToken, tokenExp
 
+import { date } from 'quasar'
+import { mapActions } from 'vuex'
 import Menulist from 'components/MenuList.vue'
 import { GetUser } from 'src/graphql/MasterUser'
 export default {
@@ -137,7 +139,6 @@ export default {
     return {
       leftDrawerOpen: false,
       userdata: userdata,
-      username: userdata.username,
       auth: auth,
       token: token,
       refreshToken: refreshToken,
@@ -147,14 +148,18 @@ export default {
   },
   components: { Menulist },
   computed: {
+    now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   },
   mounted() {
+    this.tokenSession()
     this.getDataUser()
   },
   methods: {
+    ...mapActions('showcase', {
+      doLogout: 'logout'
+    }),
     getDataUser() {
       this.data.push(this.userdata)
-      console.log(this.data, 'data');
     },
     logoutDialog() {
       this.$q
@@ -188,15 +193,40 @@ export default {
     },
     logout() {
       setTimeout(() => {
-        sessionStorage.removeItem('username')
-        this.$q.notify({
-          color: 'negative',
-          textColor: 'white',
-          icon: 'fas fa-exclamation-circle',
-          message: 'You Have Been Logout'
+        this.$q.loading.show()
+        this.doLogout().then(() => {
+          setTimeout(() => {
+            this.$q.notify({
+              timeout:300,
+              color: 'negative',
+              textColor: 'white',
+              icon: 'fas fa-exclamation-circle',
+              message: 'You Have Been Logout'
+            })
+            this.$q.loading.hide()
+          }, 2000);
         })
         this.$router.replace('/')
       }, 2000)
+    },
+    tokenSession() {
+      let date1 = this.tokenExp
+      let date2 = this.now
+      let unit = 'days'
+      let diff = date.getDateDiff(date1, date2, unit)
+      if (diff < 0) {
+        this.$q.notify({
+          timeout: 300,
+          color: 'negative',
+          textColor: 'white',
+          icon: 'fas fa-check-circle',
+          message: 'Expired Token'
+        })
+        setTimeout(() => {
+          this.logout()
+        }, 1000);
+
+      }
     }
   }
 }

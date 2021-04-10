@@ -59,6 +59,30 @@ export async function appsmode(context, payload) {
   context.commit('setAppsmode', payload)
 }
 
+// action showcase/initUser
+export function initUser(context) {
+  // jalankan vuex store mutation initUser
+  context.commit('initUser')
+}
+export function initToken(context) {
+  context.commit('initToken')
+}
+export function initRToken(context) {
+  context.commit('initRToken')
+}
+export function inittokensExpiry(context) {
+  context.commit('inittokensExpiry')
+}
+export function initAppsMode(context) {
+  context.commit('initAppsMode')
+}
+
+// action showcase/logout
+export async function logout(context) {
+  // jalankan vuex store mutation resetUser
+  context.commit('resetUser')
+}
+
 // =======================================
 // AREA
 // =======================================

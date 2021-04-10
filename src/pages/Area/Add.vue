@@ -68,14 +68,21 @@ import { insertArea } from 'src/graphql/Area'
 import { date } from 'quasar'
 export default {
   name: 'AddArea',
+  props: ['userLogin'],
   data() {
     return {
       AreaName: '',
       AreaCode: '',
       Country: '',
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username')
+      user: this.userLogin
     }
+  },
+   computed: {
+    now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
+  },
+  mounted() {
+    console.log(this.user.username, '=========================user');
   },
   methods: {
     SubmitButton() {
@@ -132,7 +139,6 @@ export default {
         })
       })
     },
-
     SubmitDialog() {
       this.$q
         .dialog({
@@ -162,7 +168,6 @@ export default {
           console.log('>>>> Cancel')
         })
     },
-
     CancelDialog() {
       this.$q
         .dialog({
@@ -192,9 +197,6 @@ export default {
           console.log('>>>> Cancel')
         })
     }
-  },
-  computed: {
-    now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   }
 }
 </script>

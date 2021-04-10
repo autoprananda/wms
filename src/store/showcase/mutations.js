@@ -23,7 +23,42 @@ export const setAppsmode = (state, payload) => {
   state.appsmode = payload
   localStorage.setItem('appsmode', payload)
 }
+export const initUser = (state) => {
+  if (state.user === null) state.user = localStorage.hasOwnProperty('user') ? JSON.parse(localStorage.getItem('user')) : null
+}
+export const initToken = (state) => {
+  if (state.ugAccessToken === null) state.ugAccessToken = localStorage.hasOwnProperty('ugAccessToken') ? localStorage.getItem('ugAccessToken') : null
+}
+export const initRToken = state => {
+  if (state.ugRefreshToken === null) {
+    state.ugRefreshToken = localStorage.hasOwnProperty('ugRefreshToken')
+      ? localStorage.getItem('ugRefreshToken')
+      : null
+  }
+}
+export const inittokensExpiry = state => {
+  if (state.tokensExpiry === null) {
+    state.tokensExpiry = localStorage.hasOwnProperty('tokensExpiry')
+      ? localStorage.getItem('tokensExpiry')
+      : null
+  }
+}
+export const initAppsMode = state => {
+  if (state.appsmode === null) {
+    state.appsmode = localStorage.hasOwnProperty('appsmode')
+      ? localStorage.getItem('appsmode')
+      : null
+  }
+}
 
+export const resetUser = (state) => {
+  state.user = null
+  state.ugAccessToken = null
+  state.appsmode = null
+  // LocalStorage.remove('user')
+  localStorage.clear()
+}
+// =======================================================================
 export const setDataArea = (state, payload) => {
   state.dataArea = payload
 }

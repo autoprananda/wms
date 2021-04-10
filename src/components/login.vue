@@ -29,6 +29,7 @@
             label="Password"
             :type="isPwd ? 'password' : 'text'"
             ref="password"
+            @keypress.enter="LoginButton"
           >
             <template v-slot:prepend>
               <q-icon name="mdi-textbox-password" />
@@ -85,7 +86,7 @@
 <script>
 
 let init = ''
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import bcryptjs from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { GetUser } from 'src/graphql/MasterUser'
@@ -108,10 +109,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('showcase', {
-      loginUrl: 'loginUrl',
-      LONG_DATE_ID: 'LONG_DATE_ID'
-    }),
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   },
   apollo: {
@@ -142,9 +139,9 @@ export default {
           if (passwordCheck) {
             this.token = jwt.sign({
               id: response.data.wms_m_user[0].id,
+              fullname: response.data.wms_m_user[0].fullname,
               username: response.data.wms_m_user[0].username
             }, 'SECRET')
-            console.log(this.token, 'token');
             let decoded = jwt.verify(this.token, 'SECRET')
             this.doLogin(decoded)
             this.doToken(this.token)

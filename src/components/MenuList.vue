@@ -29,12 +29,13 @@
 import { GetMenu } from 'src/graphql/MasterMenu'
 export default {
   name: 'Menulist',
-  props: ['ugAccessToken'],
+  props: ['userLogin', 'ugAccessToken'],
   data() {
     return {
       loadMenu: [],
       loadSubMenuRole: [],
       link: null,
+      user: this.userLogin,
       token: this.ugAccessToken
     }
   },
@@ -49,7 +50,7 @@ export default {
   },
   methods: {
     redirectMenu(rights, data) {
-      localStorage.setItem('actionRights', JSON.stringify(rights))
+      // localStorage.setItem('actionRights', JSON.stringify(rights))
       this.$router.push({ path: rights.path }).catch(err => {
         err = true
       })
@@ -61,7 +62,6 @@ export default {
     },
     loadData() {
       this.$apollo.queries.loadMenu.refetch().then(response => {
-        console.log(response, 'response')
       })
     }
   }
