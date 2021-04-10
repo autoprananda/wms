@@ -4,7 +4,7 @@
 [![version](https://img.shields.io/github/package-json/v/autoprananda/wms)](https://img.shields.io/github/package-json/v/autoprananda/wms)
 [![commit](https://img.shields.io/github/last-commit/autoprananda/wms)](https://img.shields.io/github/last-commit/autoprananda/wms)
 [![Language](https://img.shields.io/github/languages/count/autoprananda/wms)](https://img.shields.io/github/languages/count/autoprananda/wms)
-[![Contributor](https://img.shields.io/badge/contributors-2-brightgreen.svg)](https://github.com/autoprananda/wms/graphs/contributors)
+[![all contributor](https://img.shields.io/github/contributors/autoprananda/wms)](https://img.shields.io/github/contributors/autoprananda/wms)
 [![versionvuejs](https://img.shields.io/badge/dynamic/json?color=brightgreen&url=https://raw.githubusercontent.com/autoprananda/wms/main/package.json&query=$.engines.yarn&label=yarn&logo=yarn)](https://classic.yarnpkg.com/en/)
 [![versionvuejs](https://img.shields.io/badge/dynamic/json?color=brightgreen&url=https://raw.githubusercontent.com/autoprananda/wms/main/package.json&query=$.devDependencies.eslint&label=eslint&logo=eslint)](https://www.npmjs.com/package/eslint)
 [![versionvuejs](https://img.shields.io/badge/dynamic/json?color=brightgreen&url=https://raw.githubusercontent.com/autoprananda/wms/main/package.json&query=$.dependencies.quasar&label=quasar&logo=quasar)](https://quasar.dev/)
