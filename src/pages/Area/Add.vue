@@ -81,9 +81,6 @@ export default {
    computed: {
     now: () => date.formatDate(Date.now(), 'YYYY-MM-DD HH:mm:ss')
   },
-  mounted() {
-    console.log(this.user.username, '=========================user');
-  },
   methods: {
     SubmitButton() {
       this.submitting = true
@@ -95,7 +92,7 @@ export default {
               area_code: this.AreaCode,
               area_name: this.AreaName,
               created_date: this.now,
-              created_by: this.user
+              created_by: this.user.fullname
             }
           }
         })

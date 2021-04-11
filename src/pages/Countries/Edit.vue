@@ -67,13 +67,14 @@ import { EditMasterCountries } from 'src/graphql/Countries'
 import { date } from 'quasar'
 export default {
   name: 'EditCountry',
+  props: ['userLogin'],
   data() {
     return {
       CountryCode: '',
       Description: '',
       OldCode: '',
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       selected: JSON.parse(localStorage.selectedData)
     }
   },
@@ -101,7 +102,7 @@ export default {
             changes: {
               country_code: this.CountryCode,
               country_name: this.Description,
-              modified_by: this.user,
+              modified_by: this.user.fullname,
               modified_date: this.now
             }
           }

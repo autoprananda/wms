@@ -72,6 +72,7 @@ import { EditMasterCities } from 'src/graphql/Cities'
 import { date } from 'quasar'
 export default {
   name: 'EditCities',
+  props: ['userLogin'],
   data() {
     return {
       City: '',
@@ -79,7 +80,7 @@ export default {
       OldCity: '',
       submitting: false,
       loadregion: [],
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       selected: JSON.parse(localStorage.selectedData),
     }
   },
@@ -114,7 +115,7 @@ export default {
               id_region: this.RegionName.id_region,
               city_name: this.City,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

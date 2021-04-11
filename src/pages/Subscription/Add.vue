@@ -571,10 +571,11 @@ import { FilterBank } from 'src/graphql/Customer/CustomerBank'
 import { date } from 'quasar'
 export default {
   name: 'Subscription',
+  props: ['userLogin'],
   data() {
     return {
       selected: JSON.parse(localStorage.selectedData),
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
 
       SubscriptionNoMaster: [],
       SubscriptionNo: '',
@@ -778,7 +779,7 @@ export default {
               balance_amount: this.TotalSubscription,
 
               created_date: this.now,
-              created_by: this.user
+              created_by: this.user.fullname
             }
           }
         })

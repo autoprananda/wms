@@ -89,9 +89,10 @@ import { GetAllCountries } from 'src/graphql/Countries'
 import { date } from 'quasar'
 export default {
   name: 'EditRegion',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       RegionName: '',
       RegionCode: '',
       Country: {},
@@ -134,7 +135,7 @@ export default {
               region_name: this.RegionName,
               id_country: this.Country.id_country,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

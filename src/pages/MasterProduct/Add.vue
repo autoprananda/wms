@@ -477,6 +477,7 @@ import { InsertProduct } from 'src/graphql/MasterProductCode'
 import { date } from 'quasar'
 export default {
   name: 'AddProduct',
+  props: ['userLogin'],
   data() {
     return {
       optClassification: [],
@@ -488,7 +489,7 @@ export default {
       DistributionOfSales: '',
       optDistribution: [],
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       Description: '',
       ProductCode: '',
       ProductCategory: '',
@@ -651,7 +652,7 @@ export default {
               tax_rate: this.TaxRate,
               subs_fee: this.SubscriptionFee,
               redempt_fee: this.RedemptionFee,
-              created_by: this.user,
+              created_by: this.user.fullname,
               created_date: this.now
             }
           }

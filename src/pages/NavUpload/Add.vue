@@ -138,6 +138,7 @@ import { getProduct } from 'src/graphql/MasterProductCode'
 import { date } from 'quasar'
 export default {
   name: 'AddNav',
+  props: ['userLogin'],
   data() {
     return {
       NavDate: '',
@@ -148,7 +149,7 @@ export default {
       Bank: '',
       optBank: [],
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username')
+      user: this.userLogin
     }
   },
   apollo: {
@@ -183,7 +184,7 @@ export default {
               nav_amount: +this.NavAmount,
               nav_date:  this.NavDate,
               created_date: this.now,
-              created_by: this.user
+              created_by: this.user.fullname
             }
           }
         })

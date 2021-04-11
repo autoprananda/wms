@@ -176,9 +176,10 @@ import { date } from 'quasar'
 import { InsertDropDownList } from 'src/graphql/MasterDropDownList'
 export default {
   name: 'AddDropDownList',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       submitting: false,
       emessage: '',
       DropDownListName: '',
@@ -217,7 +218,7 @@ export default {
           dropdown_details_code: this.CodeItem,
           dropdown_details_desc: this.ItemDescription,
           created_date: this.now,
-          created_by: this.user
+          created_by: this.user.fullname
         })
         this.adding = false
         this.ClearAdd()
@@ -305,7 +306,7 @@ export default {
               dropdown_desc: this.DropDownListName,
               dropdown_code: this.DropDownListCode,
               created_date: this.now,
-              created_by: this.user,
+              created_by: this.user.fullname,
               dropdown_list: { data: this.listData }
             }
           }

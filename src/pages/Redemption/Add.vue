@@ -422,11 +422,11 @@ import { GetLastNav } from 'src/graphql/NavUpload'
 import { date } from 'quasar'
 export default {
   name: 'Redemption',
-  props: ['Muser'],
+  props: ['userLogin'],
   data() {
     return {
       selected: JSON.parse(localStorage.selectedData),
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
 
       submitting: false,
       TransactionNoMaster: [],
@@ -838,7 +838,7 @@ export default {
               total_fee_amount: this.TotalFeeAmount,
               total_payment_amount: this.TotalPayment,
               created_date: this.now,
-              created_by: this.user
+              created_by: this.user.fullname
             }
           }
         })
@@ -851,7 +851,7 @@ export default {
                 changes: {
                   balance_amount: this.UpdateBalance,
                   modified_date: this.now,
-                  modified_by: this.user
+                  modified_by: this.user.fullname
                 }
               }
             })

@@ -138,6 +138,7 @@ import { getProduct } from 'src/graphql/MasterProductCode'
 import { date } from 'quasar'
 export default {
   name: 'EditNav',
+  props: ['userLogin'],
   data() {
     return {
       OldCode: '',
@@ -150,7 +151,7 @@ export default {
       Bank: {},
       optBank: [],
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       selected: JSON.parse(localStorage.selectedData)
     }
   },
@@ -196,7 +197,7 @@ export default {
               nav_amount: +this.NavAmount,
               nav_date:  this.NavDate,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

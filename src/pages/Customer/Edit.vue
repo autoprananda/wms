@@ -955,10 +955,11 @@ import { getBankCustomer, InsertBank, EditBank, DeleteBank } from 'src/graphql/C
 import { date } from 'quasar'
 export default {
   name: 'AddProduct',
+  props: ['userLogin'],
   data() {
     return {
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       selected: JSON.parse(localStorage.selectedData),
       tab: 'one',
       loading: false,
@@ -1292,7 +1293,7 @@ export default {
               id_account_type: this.AccountType.id_dropdownlist_detail,
               id_currency: this.Currency.id,
               id_status: this.StatusBank.id_dropdownlist_detail,
-              created_by: this.user,
+              created_by: this.user.fullname,
               created_date: this.now
             }
           }
@@ -1371,7 +1372,7 @@ export default {
               id_account_type: this.AccountTypeEdit.id_dropdownlist_detail,
               id_currency: this.CurrencyEdit.id,
               id_status: this.StatusBankEdit.id_dropdownlist_detail,
-              modified_by: this.user,
+              modified_by: this.user.fullname,
               modified_date: this.now
             }
           }
@@ -1494,7 +1495,7 @@ export default {
 
               fullname: this.FirstName + ' ' + this.LastName,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

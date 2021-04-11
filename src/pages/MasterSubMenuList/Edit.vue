@@ -114,9 +114,10 @@ import { EditMasterSubMenu } from 'src/graphql/MasterSubMenu'
 import { date } from 'quasar'
 export default {
   name: 'EditMasterSubMenu',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       submitting: false,
       emessage: '',
       MenuDescription: {},
@@ -158,7 +159,7 @@ export default {
               order_key: +this.SortOrder,
               path: this.Path,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

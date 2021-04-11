@@ -786,10 +786,11 @@ import { InsertCustomer, GetGenerateCIF } from 'src/graphql/Customer/Customer'
 import { date } from 'quasar'
 export default {
   name: 'AddCustomer',
+  props: ['userLogin'],
   data() {
     return {
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       tab: 'one',
       loading: false,
       
@@ -1090,7 +1091,7 @@ export default {
           currency: this.Currency.currencies_code,
           id_status: this.StatusBank.id_dropdownlist_detail,
           status: this.StatusBank.dropdown_details_desc,
-          created_by: this.user,
+          created_by: this.user.fullname,
           created_date: this.now
         })
         this.adding = false
@@ -1221,7 +1222,7 @@ export default {
 
               fullname: this.FirstName + ' ' + this.LastName,
               customer_account_bank: { data: this.listDataBank },
-              created_by: this.user,
+              created_by: this.user.fullname,
               created_date: this.now
             }
           }

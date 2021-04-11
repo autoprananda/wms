@@ -67,9 +67,10 @@ import { InsMasterCountries } from 'src/graphql/Countries'
 import { date } from 'quasar'
 export default {
   name: 'AddCountry',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       CountryCode: '',
       Description: '',
       submitting: false
@@ -86,7 +87,7 @@ export default {
             objects: {
               country_code: this.CountryCode,
               country_name: this.Description,
-              created_by: this.user,
+              created_by: this.user.fullname,
               created_date: this.now
             }
           }

@@ -125,9 +125,10 @@ import { GetMasterMenu } from 'src/graphql/MasterMenu'
 import { InsMasterSubMenu } from 'src/graphql/MasterSubMenu'
 export default {
   name: 'AddMasterSubMenu',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       submitting: false,
       emessage: '',
       optMenuDesc: [],
@@ -158,7 +159,7 @@ export default {
               submenu_desc: this.SubMenuDesc,
               order_key: +this.SortOrder,
               path: this.Path,
-              created_by: this.user,
+              created_by: this.user.fullname,
               created_date: this.now
             }
           }

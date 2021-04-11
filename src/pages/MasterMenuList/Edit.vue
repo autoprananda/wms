@@ -87,6 +87,7 @@ import { EditMasterMenu } from 'src/graphql/MasterMenu'
 import { date } from 'quasar'
 export default {
   name: 'EditMasterMenu',
+  props: ['userLogin'],
   data() {
     return {
       userdata: this.Muser,
@@ -97,7 +98,7 @@ export default {
       GrupIcon: '',
       SortOrder: '',
       oldcode: '',
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       selected: JSON.parse(localStorage.selectedData)
     }
   },
@@ -123,7 +124,7 @@ export default {
               order_key: +this.SortOrder,
               icon: this.GrupIcon,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

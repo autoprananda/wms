@@ -147,6 +147,7 @@ import { GetDropDown } from 'src/graphql/MasterDropDownListDetail'
 import { date } from 'quasar'
 export default {
   name: 'EditBranch',
+  props: ['userLogin'],
   data() {
     return {
       userdata: this.Muser,
@@ -160,7 +161,7 @@ export default {
       OldCode: '',
       submitting: false,
       selected: JSON.parse(localStorage.selectedData),
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       loadRegion: [],
       loadStatus: []
     }
@@ -214,7 +215,7 @@ export default {
               id_status: this.Status.id_dropdownlist_detail,
               id_area: this.Area.id_area,
               id_region: this.Region.id_region,
-              modified_by: this.user,
+              modified_by: this.user.fullname,
               modified_date: this.now
             }
           }

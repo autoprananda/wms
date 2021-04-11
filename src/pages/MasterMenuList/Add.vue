@@ -93,9 +93,10 @@ import { date } from 'quasar'
 import { InsMasterMenu } from 'src/graphql/MasterMenu'
 export default {
   name: 'AddMasterMenu',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       submitting: false,
       emessage: '',
       MenuCode: '',
@@ -117,7 +118,7 @@ export default {
               menu_desc: this.MenuDescription,
               order_key: +this.SortOrder,
               icon: this.GrupIcon,
-              created_by: this.user,
+              created_by: this.user.fullname,
               created_date: this.now
             }
           }

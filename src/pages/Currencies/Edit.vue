@@ -75,9 +75,10 @@ import { date } from 'quasar'
 import { EditMasterCurrency } from 'src/graphql/Currency'
 export default {
   name: 'Edit',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       CurrencyCode: '',
       Description: '',
       OldCode: '',
@@ -109,7 +110,7 @@ export default {
             changes: {
               currencies_code: this.CurrencyCode,
               currencies_desc: this.Description,
-              modified_by: this.user,
+              modified_by: this.user.fullname,
               modified_date: this.now
             }
           }

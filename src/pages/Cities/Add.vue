@@ -78,9 +78,10 @@ import { InsMasterCities } from 'src/graphql/Cities'
 import { date } from 'quasar'
 export default {
   name: 'AddCities',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       City: '',
       RegionName: '',
       loadregion: [],
@@ -106,7 +107,7 @@ export default {
               id_region: this.RegionName.id_region,
               city_name: this.City,
               created_date: this.now,
-              created_by: this.user
+              created_by: this.user.fullname
             }
           }
         })

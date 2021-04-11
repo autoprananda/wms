@@ -81,10 +81,10 @@ import { InsMasterCurrency } from 'src/graphql/Currency'
 import { date } from 'quasar'
 export default {
   name: 'Add',
+  props: ['userLogin'],
   data() {
     return {
-      
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       CurrencyCode: '',
       Description: '',
       submitting: false,
@@ -102,7 +102,7 @@ export default {
             objects: {
               currencies_code: this.CurrencyCode,
               currencies_desc: this.Description,
-              created_by: this.user,
+              created_by: this.user.fullname,
               created_date: this.now
             }
           }

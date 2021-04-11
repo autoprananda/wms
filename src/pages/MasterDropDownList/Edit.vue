@@ -223,9 +223,10 @@ import {
 } from 'src/graphql/MasterDropDownListDetail'
 export default {
   name: 'EditDropDownList',
+  props: ['userLogin'],
   data() {
     return {
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       LoadDetail: false,
       loaddata: [],
       loading: false,
@@ -319,7 +320,7 @@ export default {
               dropdown_details_code: this.CodeItem,
               dropdown_details_desc: this.ItemDescription,
               created_date: this.now,
-              created_by: this.user
+              created_by: this.user.fullname
             }
           }
         })
@@ -392,7 +393,7 @@ export default {
               dropdown_details_code: this.CodeItemEdit,
               dropdown_details_desc: this.ItemDescriptionEdit,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })
@@ -426,7 +427,7 @@ export default {
             changes: {
               dropdown_desc: this.DropDownListName,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

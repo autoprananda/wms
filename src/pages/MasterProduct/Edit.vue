@@ -471,11 +471,12 @@ import { GetMasterCurrency } from 'src/graphql/Currency'
 import { date } from 'quasar'
 export default {
   name: 'EditProduct',
+  props: ['userLogin'],
   data() {
     return {
       carousel: false,
       submitting: false,
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       //
       ProductCategory: {},
       optProductCategory: [],
@@ -663,7 +664,7 @@ export default {
               subs_fee: this.SubscriptionFee,
               redempt_fee: this.RedemptionFee,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })

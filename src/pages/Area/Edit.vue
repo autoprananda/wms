@@ -68,6 +68,7 @@ import { editArea } from 'src/graphql/Area'
 import { date } from 'quasar'
 export default {
   name: 'EditArea',
+  props: ['userLogin'],
   data() {
     return {
       AreaName: '',
@@ -75,7 +76,7 @@ export default {
       Country: '',
       submitting: false,
       OldCode: '',
-      user: this.$q.sessionStorage.getItem('username'),
+      user: this.userLogin,
       selected: JSON.parse(localStorage.selectedData)
     }
   },
@@ -104,7 +105,7 @@ export default {
               area_code: this.AreaCode,
               area_name: this.AreaName,
               modified_date: this.now,
-              modified_by: this.user
+              modified_by: this.user.fullname
             }
           }
         })
