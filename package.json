@@ -1,13 +1,14 @@
 {
   "name": "wms",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Aplication for Selling Agent",
+  "productName": "Artha - Selling Agent",
   "author": "",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "start": "icongenie generate -i artha.png --skip-trim --theme-color ffffff"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",

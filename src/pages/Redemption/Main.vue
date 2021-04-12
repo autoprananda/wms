@@ -129,13 +129,15 @@
 </template>
 
 <script>
-
+let init = ''
+import { ValidationRedemption } from 'src/graphql/Redemption'
 import { mapState, mapActions } from 'vuex'
 export default {
   name: 'MainCustomer',
   data() {
     return {
       loaddata: [],
+      dataSubscripiton: [],
       selected: [],
       loading: false,
       filter: null,
@@ -175,6 +177,15 @@ export default {
           align: 'Left'
         }
       ],
+    }
+  },
+  apollo: {
+    dataSubscripiton: {
+      query: ValidationRedemption,
+      update: data => data.wms_subscription,
+      variables: {
+        code: init
+      }
     }
   },
     computed: {
@@ -226,8 +237,23 @@ export default {
       }, 1000)
     },
     onRedemption() {
-      localStorage.setItem('selectedData', JSON.stringify(this.selected))
-      this.$router.push({ path: '/redemption/add' })
+      this.$apollo.queries.dataSubscripiton.refetch({
+        code: this.selected[0].gcif_number
+      })
+        .then(response => {
+          this.dataSubscripiton = response.data.wms_subscription
+          if (this.dataSubscripiton.length === 0) {
+            this.$q.dialog({
+              title: "Can't Redemption",
+              message: 'Must be Subscription First',
+              color: 'red',
+              ok: true
+            })
+          } else {
+            localStorage.setItem('selectedData', JSON.stringify(this.selected))
+            this.$router.push({ path: '/redemption/add' })
+          }
+        })
     },
     onUpdate() {
       localStorage.setItem('selectedData', JSON.stringify(this.selected))

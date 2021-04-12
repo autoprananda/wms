@@ -117,11 +117,11 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `Quasar App`,
-        short_name: `Quasar App`,
-        description: `A Quasar Framework app`,
+        name: 'Artha - WMS Selling Agent',
+        short_name: 'Artha',
+        description: 'Wealth Management System - Selling Agent',
         display: 'standalone',
-        orientation: 'portrait',
+        // orientation: 'portrait',
         background_color: '#ffffff',
         theme_color: '#027be3',
         icons: [

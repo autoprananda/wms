@@ -68,3 +68,10 @@ export const getDataRedemption = gql`
     }
   }
 `
+export const ValidationRedemption = gql`
+query MyQuery ($code: String) {
+  wms_subscription(where: {gcif_number: {_eq: $code}}) {
+    subscription_no
+  }
+}
+`

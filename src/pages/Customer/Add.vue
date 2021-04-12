@@ -1167,6 +1167,7 @@ export default {
               : '00000' + x
             : '000000' + x
         this.GlobalCifNumber = 'INDI-' + y
+        console.log(y, 'y')
         this.SubmitButton()
         return this.GlobalCifNumber
       } else {
