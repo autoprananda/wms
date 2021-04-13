@@ -40,28 +40,23 @@ import { ViewRegion, DeleteRegion } from 'src/graphql/Region'
 // =======================================
 // action showcase/login
 export async function login(context, payload) {
-  // jalankan vuex store mutation setUser
   context.commit('setUser', payload)
 }
 export async function token(context, payload) {
-  // jalankan vuex store mutation setUser
   context.commit('setToken', payload)
 }
 export async function rtoken(context, payload) {
-  // jalankan vuex store mutation setToken
   context.commit('setRToken', payload)
 }
 export async function tokensExpiry(context, payload) {
   context.commit('settokensExpiry', payload)
 }
 export async function appsmode(context, payload) {
-  // jalankan vuex store mutation setToken
   context.commit('setAppsmode', payload)
 }
 
 // action showcase/initUser
 export function initUser(context) {
-  // jalankan vuex store mutation initUser
   context.commit('initUser')
 }
 export function initToken(context) {
@@ -79,7 +74,6 @@ export function initAppsMode(context) {
 
 // action showcase/logout
 export async function logout(context) {
-  // jalankan vuex store mutation resetUser
   context.commit('resetUser')
 }
 

@@ -74,7 +74,7 @@
                     
                   </q-item-section>
                   <q-item-section top>
-                    <q-item-label  v-if="data.length !== 0" lines="1" class="q-mt-sm q-mb-sm">
+                    <q-item-label  v-if="userdata.length !== 0" lines="1" class="q-mt-sm q-mb-sm">
                       <span class="text-weight-bold" style="font-size: 17px">{{
                         userdata.fullname
                       }}</span>
@@ -112,13 +112,11 @@
 </template>
 
 <script>
-let init = ''
 let auth, userdata, token, refreshToken, tokenExp
 
 import { date } from 'quasar'
 import { mapActions } from 'vuex'
 import Menulist from 'components/MenuList.vue'
-import { GetUser } from 'src/graphql/MasterUser'
 export default {
   name: 'MainLayout',
   preFetch({ store, currentRoute, previousRoute, redirect }) {
@@ -126,11 +124,12 @@ export default {
       if (!store.getters['showcase/appsmode']) {
         redirect('/')
       }
-      userdata = store.getters['showcase/user']
+      userdata = JSON.parse(localStorage.getItem('user'))
       auth = store.getters['showcase/isAuth']
-      token = store.getters['showcase/token']
-      refreshToken = store.getters['showcase/rtoken']
-      tokenExp = store.getters['showcase/tokensExpiry']
+      token = localStorage.getItem('ugAccessToken')
+      refreshToken = localStorage.getItem('ugRefreshToken')
+      tokenExp = localStorage.getItem('tokensExpiry')
+      
     } else {
       redirect('/')
     }
@@ -142,8 +141,7 @@ export default {
       auth: auth,
       token: token,
       refreshToken: refreshToken,
-      tokenExp: tokenExp,
-      data: []
+      tokenExp: tokenExp
     }
   },
   components: { Menulist },
@@ -152,15 +150,11 @@ export default {
   },
   mounted() {
     this.tokenSession()
-    this.getDataUser()
   },
   methods: {
     ...mapActions('showcase', {
       doLogout: 'logout'
     }),
-    getDataUser() {
-      this.data.push(this.userdata)
-    },
     logoutDialog() {
       this.$q
         .dialog({

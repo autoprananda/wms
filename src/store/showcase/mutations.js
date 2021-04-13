@@ -9,7 +9,6 @@ export const setUser = (state, payload) => {
 export const setToken = (state, payload) => {
   state.ugAccessToken = payload
   localStorage.setItem('ugAccessToken', payload)
-  // LocalStorage.set('logged', 'true')
 }
 export const setRToken = (state, payload) => {
   state.ugRefreshToken = payload
@@ -55,7 +54,6 @@ export const resetUser = (state) => {
   state.user = null
   state.ugAccessToken = null
   state.appsmode = null
-  // LocalStorage.remove('user')
   localStorage.clear()
 }
 // =======================================================================

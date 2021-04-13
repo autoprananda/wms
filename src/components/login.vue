@@ -149,13 +149,12 @@ export default {
             let ms = Number(decoded.iat + '000')
             let exptime = date.formatDate(ms, 'YYYY-MM-DD HH:mm:ss')
             this.dotokensExpiry(exptime)
-            // this.$q.sessionStorage.set('username', response.data.wms_m_user[0].username)
             setTimeout(() => {
               this.$q.notify({
                 color: 'accent',
                 textColor: 'white',
                 icon: 'fas fa-check-circle',
-                message: 'Welcome, ' + decoded.username
+                message: 'Welcome, ' + decoded.fullname
               })
               this.popupselection('wms')
             }, 1000);
